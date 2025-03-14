@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+textarea {
+  @apply w-full border my-1 py-2 px-3 rounded-2xl;
+}
+
+textarea {
+  height: 140px;
+}
+
+button {
+  @apply bg-gray-300;
+}
+
+button.primary {
+  background-color: #edbf6d; /* Use hex code for the color */
+  color: #00032e; /* Text color */
+  padding: 0.5rem; /* Adjust padding if needed */
+  width: 100%; /* Full width */
+  border-radius: 1rem; /* Rounded corners */
+}
+
+button.primary:hover {
+  background-color: #d9a856; /* Hover effect */
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  animation: marquee 20s linear infinite;
+}
+
+/* Reset default margin and padding for all elements */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  width: 100%;
+}
+
+body {
+  background: linear-gradient(to bottom right, #3e2723 70%, #000000 30%);
+  height: 100vh;
+  margin: 0;
+}
+
+/* Hover effect for donation cards */
+.donation-card {
+  position: relative;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-image: url(/images/donatebook.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 300px;
+  transition: background-size 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Zoom in background image on hover */
+.donation-card:hover {
+  background-size: 120%; /* Zoom in the background image */
+}

@@ -1,0 +1,147 @@
+.abc {
+    .dashboard-container {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+  
+    // Sidebar
+    .menu-container {
+      display: flex;
+      flex-direction: column;
+      width: 288px;
+      height: 100vh;
+      padding: 20px;
+      background-color: #f9f9f9;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      transition: width 0.3s ease-in-out;
+      
+      @media (max-width: 1024px) {
+        width: 220px; // Reduce sidebar width on medium screens
+      }
+  
+      @media (max-width: 768px) {
+        width: 180px; // Adjust for tablets
+      }
+  
+      @media (max-width: 480px) {
+        width: 120px; // Adjust for mobile
+      }
+    }
+  
+    // Logo
+    .logo {
+      margin-bottom: 32px;
+      height: 77px;
+      width: 163px;
+  
+      @media (max-width: 768px) {
+        width: 80px;
+        height: auto;
+      }
+    }
+  
+    // Menu Buttons
+    .menu-button {
+      text-transform: none !important;
+      background-color: rgb(255, 255, 255) !important;
+      outline: none !important;
+      transition: background-color 0.3s ease;
+      font-size: 16px;
+      padding: 10px;
+      margin-bottom: 10px;
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      color: #3e2723;
+       
+  
+      @media (max-width: 768px) {
+        font-size: 14px;
+        padding: 8px;
+      }
+  
+      @media (max-width: 480px) {
+        font-size: 12px;
+        padding: 6px;
+      }
+    }
+  
+    .menu-button.active {
+      background-color: #3e2723 !important;
+      color: white !important;
+      display: flex;
+      justify-content: flex-start;
+    }
+  
+    // Main Content Area
+    .dashboard-details {
+      background-color: #ffffff;
+      flex-grow: 1;  // Ensures content expands dynamically
+      padding: 30px;
+      overflow-y: auto;
+      min-width: 0; // Prevents content overflow
+  
+      @media (max-width: 768px) {
+        padding: 15px;
+      }
+  
+      @media (max-width: 480px) {
+        padding: 10px;
+      }
+    }
+    .logout{
+      display: flex;
+      align-items: center;
+      
+      background-color: rgb(255, 255, 255);
+      height: 64px;
+      width: 256px;
+      border-radius: 62px;
+      margin-top: 220px;
+      box-shadow: 2px 3px 4px 2px rgba(0, 0, 0, 0.05);
+    }
+    .logout-profile{
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-left: 18px;
+      margin-right: 10px;
+      background-color: rgb(255, 255, 255);
+    }
+    .logout-name{
+      font-family: "Inter";
+      font-weight: 500;
+      font-size: 16px;
+
+    }
+    .logout-email{
+      font-family: "Inter";
+      font-weight: 400;
+      font-size: 14px;
+      color: rgba(141, 141, 141, 1);
+    }
+    .logout-logo{
+      margin-left: 10px;
+    }
+    .all-user-head{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+     }
+     .welcome-name{
+      font-family: "Inter";
+      font-size: 24px;
+      font-weight: 600;
+      color: #1E293B;
+     }
+     .sub-text{
+      font-family: "Inter";
+      font-weight: 400;
+      font-size: 16px;
+      color: #64748B;
+     }
+  }
+  

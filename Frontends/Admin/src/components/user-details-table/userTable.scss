@@ -1,0 +1,143 @@
+/* Table Container */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+/* Full Table */
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: rgb(255, 255, 255); /* Red Table Background */
+}
+
+/* Table Header */
+.tab-hed {
+  background-color: rgba(248, 248, 255, 1);
+  text-align: center;
+  font-weight: bold;
+}
+.table-name{
+  text-align: justify;
+}
+
+/* Table Row Alternating Colors */
+.odd-row {
+  background-color: white;
+}
+
+.even-row {
+  background-color: #f0f0f0; 
+}
+
+
+.responsive-table th,
+.responsive-table td {
+  padding: 12px;
+  text-align: justify;
+  vertical-align: middle;
+}
+
+
+.profile-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+
+.name-cont {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.users-head{
+  display: flex;
+    justify-content: space-between;
+    background-color: rgb(255, 255, 255);
+    padding: 15px 0px;
+    border-radius: 10px;
+}
+
+
+.name-profile {
+  font-family: "Inter";
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.email-profile {
+  font-family: "Inter";
+  font-size: 14px;
+  font-weight: 400;
+  color: #64748B;
+}
+
+.date-field,
+.role-field {
+  font-family: "Inter";
+  font-weight: 600;
+  font-size: 14px;
+  color: #3A354E;
+}
+
+.id-card-field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: "Inter";
+  font-weight: 500;
+  font-size: 14px;
+  color: #0089F1;
+}
+
+/* Delete Icon */
+.delete-icon {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.delete-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .responsive-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .responsive-table th,
+  .responsive-table td {
+    display: block;
+    width: 100%;
+    text-align: right;
+  }
+
+  .responsive-table td {
+    position: relative;
+    padding-left: 50%;
+  }
+
+  .responsive-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    font-weight: bold;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-table td:before {
+    font-size: 14px;
+  }
+}

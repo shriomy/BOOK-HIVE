@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+textarea {
+  @apply w-full border my-1 py-2 px-3 rounded-2xl;
+}
+
+textarea {
+  height: 140px;
+}
+
+button {
+  @apply bg-gray-300;
+}
+
+button.primary {
+  background-color: #edbf6d; /* Use hex code for the color */
+  color: #00032e; /* Text color */
+  padding: 0.5rem; /* Adjust padding if needed */
+  width: 100%; /* Full width */
+  border-radius: 1rem; /* Rounded corners */
+}
+
+button.primary:hover {
+  background-color: #d9a856; /* Hover effect */
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  animation: marquee 20s linear infinite;
+}
+
+/* Reset default margin and padding for all elements */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  width: 100%;
+}
+
+body {
+
+  margin: 0;
+}
