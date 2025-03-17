@@ -13,6 +13,8 @@ import DonationSinglePage from "../user/pages/DonationSinglePage";
 import AboutUsPage from "../user/pages/AboutUsPage";
 import ContactUsPage from "../user/pages/ContactUsPage";
 import FeedbackPage from "../user/pages/FeedbackPage";
+import BooksPage from "../user/pages/BooksPage";
+import BookDetailsPage from "../user/pages/BookDetailsPage";
 
 const UserRoutes = () => {
   return (
@@ -31,6 +33,8 @@ const UserRoutes = () => {
         <Route path="about" element={<AboutUsPage />} />
         <Route path="contact" element={<ContactUsPage />} />
         <Route path="feedback" element={<FeedbackPage />} />
+        <Route path="books" element={<BooksPage />} />
+        <Route path="books/:id" element={<BookDetailsPage />} />
       </Route>
     </Routes>
   );
