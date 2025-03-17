@@ -154,15 +154,15 @@ export default function Header() {
             )}
           </Link>
           <Link
-            to="/pages"
+            to="/books"
             className={`relative px-4 py-2 rounded-md transition-all duration-500 ease-in-out ${
-              isActive("/pages")
+              isActive("/books")
                 ? "bg-black text-white scale-105"
                 : "hover:text-white"
             }`}
           >
-            Pages
-            {isActive("/pages") && (
+            Books
+            {isActive("/books") && (
               <div className="absolute bottom-0 left-0 w-full h-1 bg-black transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></div>
             )}
           </Link>
