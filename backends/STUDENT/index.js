@@ -15,6 +15,7 @@ const { sendWelcomeEmail } = require("./services/welcomeMessageService"); // For
 
 const authRoutes = require("./routes/authRoutes");
 const donationRoutes = require("./routes/donationRoutes");
+const bookRoutes = require("./routes/bookRoutes");
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 require("dotenv").config();
@@ -49,6 +50,8 @@ app.use("/api/donations", donationRoutes);
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json(true);
 });
+
+app.use("/api/books", bookRoutes);
 
 // API route for an admin to verify a donation
 /*app.patch("/donations/:id/verify", authenticateUser, async (req, res) => {
