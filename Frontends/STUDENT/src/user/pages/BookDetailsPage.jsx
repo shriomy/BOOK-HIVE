@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../UserContext"; // UserContext for authentication
+import QAComponent from "../../user/components/QAComponent";
 
 const BookDetailsPage = () => {
   const { id } = useParams(); // Get book ID from URL
@@ -171,6 +172,22 @@ const BookDetailsPage = () => {
 
               {isReviewsVisible && (
                 <>
+                  {/* Review Form */}
+                  <form onSubmit={handleReviewSubmit} className="mt-6">
+                    <textarea
+                      className="w-full p-3 text-white bg-[#2c1f19] border border-[#edbf6d] rounded-lg focus:outline-none"
+                      rows="3"
+                      placeholder="Write your review..."
+                      value={newReview}
+                      onChange={(e) => setNewReview(e.target.value)}
+                    ></textarea>
+                    <button
+                      type="submit"
+                      className="bg-[#edbf6d] text-[#00032e] hover:bg-[#d9a856] p-2 w-full rounded-2xl text-center font-semibold transition-all duration-200 mt-2"
+                    >
+                      Submit Review
+                    </button>
+                  </form>
                   {reviews.length > 0 ? (
                     <div className="space-y-4">
                       {reviews.map((review) => (
@@ -265,25 +282,11 @@ const BookDetailsPage = () => {
                       No reviews yet. Be the first to review!
                     </p>
                   )}
-
-                  {/* Review Form */}
-                  <form onSubmit={handleReviewSubmit} className="mt-6">
-                    <textarea
-                      className="w-full p-3 text-white bg-[#2c1f19] border border-[#edbf6d] rounded-lg focus:outline-none"
-                      rows="3"
-                      placeholder="Write your review..."
-                      value={newReview}
-                      onChange={(e) => setNewReview(e.target.value)}
-                    ></textarea>
-                    <button
-                      type="submit"
-                      className="bg-[#edbf6d] text-[#00032e] hover:bg-[#d9a856] p-2 w-full rounded-2xl text-center font-semibold transition-all duration-200 mt-2"
-                    >
-                      Submit Review
-                    </button>
-                  </form>
                 </>
               )}
+            </div>
+            <div>
+              <QAComponent />
             </div>
           </div>
         </div>
