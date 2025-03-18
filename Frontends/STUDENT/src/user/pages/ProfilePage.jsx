@@ -21,9 +21,30 @@ export default function ProfilePage() {
       console.error("Logout failed:", error);
     }
   }
+  async function deleteAccount() {
+    if (window.confirm("Are you sure you want to delete your account?")) {
+      try {
+        setLoading(true); // Set loading to true while deletion is in progress
 
-  function deleteAccount() {
-    alert("Account deletion feature coming soon!");
+        // Send delete request to your backend API
+        await axios.delete(`/api/auth/users/${user._id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        // Log out the user after deletion
+        setUser(null);
+
+        // Redirect to the login page (or homepage if your app handles login there)
+        setRedirect("/login"); // Use "/login" if the login page is located there
+      } catch (error) {
+        console.error("Account deletion failed:", error);
+        alert("An error occurred while deleting the account.");
+      } finally {
+        setLoading(false); // Set loading to false after deletion attempt
+      }
+    }
   }
 
   function handleAvatarUpload(event) {
