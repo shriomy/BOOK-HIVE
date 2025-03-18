@@ -1,13 +1,23 @@
 const mongoose = require("mongoose");
 
-const bookSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  author: { type: String, required: true },
-  genre: { type: String, required: true },
-  category: { type: String, required: true },
-  bookCount: { type: Number, required: true },
-  bookImage: { type: String, required: true },
-});
+const bookSchema = new mongoose.Schema(
+  {
+    title: String,
+    author: String,
+    genre: String,
+    category: String,
+    bookCount: Number,
+    bookImage: String,
+    reviews: [
+      {
+        reviewText: String,
+        reviewer: String, // Store the name of the reviewer
+        date: { type: Date, default: Date.now },
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
 const Book = mongoose.model("Book", bookSchema);
 
