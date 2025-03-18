@@ -18,6 +18,7 @@ const authRoutes = require("./routes/authRoutes");
 const donationRoutes = require("./routes/donationRoutes");
 const bookRoutes = require("./routes/bookRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
+const questionRoutes = require("./routes/questionRoutes");
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 require("dotenv").config();
@@ -56,6 +57,8 @@ app.post("/logout", (req, res) => {
 app.use("/api/books", bookRoutes);
 // Backend route for deleting a review
 app.use("/api/reviews", reviewRoutes);
+
+app.use("/api/questions", questionRoutes);
 // API route for an admin to verify a donation
 /*app.patch("/donations/:id/verify", authenticateUser, async (req, res) => {
   try {
