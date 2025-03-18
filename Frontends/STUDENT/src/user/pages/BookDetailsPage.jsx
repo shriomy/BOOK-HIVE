@@ -35,6 +35,7 @@ const BookDetailsPage = () => {
     fetchBook();
   }, [id]);
 
+  // Review handling functions remain the same...
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!newReview.trim()) return;
@@ -161,7 +162,7 @@ const BookDetailsPage = () => {
               </div>
             </div>
 
-            {/* Review Section */}
+            {/* Review Section - Code remains the same */}
             <div className="mt-10">
               <h2
                 className="text-2xl text-[#edbf6d] font-bold mb-4 cursor-pointer"
@@ -285,8 +286,10 @@ const BookDetailsPage = () => {
                 </>
               )}
             </div>
+
+            {/* Updated: Pass bookId to QAComponent */}
             <div>
-              <QAComponent />
+              <QAComponent bookId={id} />
             </div>
           </div>
         </div>
