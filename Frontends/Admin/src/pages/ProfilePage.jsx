@@ -13,7 +13,7 @@ export default function ProfilePage() {
 
   async function logout() {
     try {
-      await axios.post("http://localhost:5000/logout");
+      await axios.post("http://localhost:3000/logout");
       setRedirect("/");
       setUser(null);
     } catch (error) {
