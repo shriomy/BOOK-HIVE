@@ -39,7 +39,7 @@ const UserTable = () => {
   const handleViewIdCard = async (userId) => {
     setOpenModal(true);
     console.log("View ID Card clicked for user:", userId); // Debugging
-  
+
     try {
       const response = await axios.get(
         `http://localhost:5000/user/${userId}/idcard`, // API endpoint for ID card
@@ -47,19 +47,19 @@ const UserTable = () => {
           responseType: "arraybuffer", // Important for binary image data
         }
       );
-  
+
       // Convert the binary data to base64 string
       const base64Image = arrayBufferToBase64(response.data);
-  
+
       setIdCardImage(base64Image); // Set the image data for rendering
     } catch (error) {
       console.error("Error fetching ID card:", error);
     }
   };
-  
+
   // Convert ArrayBuffer to Base64
   const arrayBufferToBase64 = (buffer) => {
-    let binary = '';
+    let binary = "";
     const bytes = new Uint8Array(buffer);
     const length = bytes.byteLength;
     for (let i = 0; i < length; i++) {
@@ -149,28 +149,32 @@ const UserTable = () => {
       </div>
 
       {/* Modal for showing ID card */}
-      <Dialog open={openModal} onClose={handleCloseModal} maxWidth="md" fullWidth>
-  <DialogTitle>University ID Card</DialogTitle>
-  <DialogContent>
-    <Box display="flex" justifyContent="center">
-      {idCardImage ? (
-        <img
-          src={`data:image/png;base64,${idCardImage}`} // Ensure the image source is correctly formatted
-          alt="ID Card"
-          style={{ maxWidth: "100%", maxHeight: "500px" }}
-        />
-      ) : (
-        <Typography>Loading ID Card...</Typography>
-      )}
-    </Box>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleCloseModal} color="primary">
-      Close
-    </Button>
-  </DialogActions>
-</Dialog>
-
+      <Dialog
+        open={openModal}
+        onClose={handleCloseModal}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>University ID Card</DialogTitle>
+        <DialogContent>
+          <Box display="flex" justifyContent="center">
+            {idCardImage ? (
+              <img
+                src={`data:image/png;base64,${idCardImage}`} // Ensure the image source is correctly formatted
+                alt="ID Card"
+                style={{ maxWidth: "100%", maxHeight: "500px" }}
+              />
+            ) : (
+              <Typography>Loading ID Card...</Typography>
+            )}
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

@@ -6,7 +6,9 @@ import UserTable from "../../components/user-details-table/userTable";
 import Profile from "../../assets/images/profile.png";
 import LogoutLogo from "../../assets/svg/logoutLogo.svg";
 import AllBooks from "../../components/all-books/allBooks";
+import AllDonations from "../../components/all-donations/allDonations";
 import DashboardHome from "../../components/dashboardHome/dashboardHome";
+import BookReviews from "../../components/book-reviews/bookReviews";
 const Dashboard = () => {
   const [isActive, setIsActive] = useState("home");
   const navigate = useNavigate();
@@ -85,6 +87,18 @@ const Dashboard = () => {
           >
             Account Requests
           </Button>
+          <Button
+            onClick={() => handleClick("donation", "#")}
+            className={`menu-button ${isActive === "donation" ? "active" : ""}`}
+          >
+            All Donations
+          </Button>
+          <Button
+            onClick={() => handleClick("reviews", "#")}
+            className={`menu-button ${isActive === "reviews" ? "active" : ""}`}
+          >
+            Book Reviews
+          </Button>
           <Box className="logout">
             <img src={Profile} alt="" className="logout-profile" />
             <Box>
@@ -119,6 +133,8 @@ const Dashboard = () => {
           {isActive === "books" ? <AllBooks /> : ""}
           {isActive === "borrow" ? "" : ""}
           {isActive === "account" ? "" : ""}
+          {isActive === "donation" ? <AllDonations /> : ""}
+          {isActive === "reviews" ? <BookReviews /> : ""}
         </Box>
       </Box>
     </div>

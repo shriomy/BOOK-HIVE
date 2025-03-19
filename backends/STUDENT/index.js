@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Donation = require("./models/Donation");
+const Book = require("./models/Book"); // Adjust the path if needed
 
 // Import email services
 const { sendVerificationEmail } = require("./services/emailService"); // For OTP
@@ -15,6 +16,10 @@ const { sendWelcomeEmail } = require("./services/welcomeMessageService"); // For
 
 const authRoutes = require("./routes/authRoutes");
 const donationRoutes = require("./routes/donationRoutes");
+const bookRoutes = require("./routes/bookRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
+const questionRoutes = require("./routes/questionRoutes");
+const contactRoutes = require("./routes/contactRoutes");
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 require("dotenv").config();
@@ -50,6 +55,13 @@ app.post("/logout", (req, res) => {
   res.cookie("token", "").json(true);
 });
 
+app.use("/api/books", bookRoutes);
+// Backend route for deleting a review
+app.use("/api/reviews", reviewRoutes);
+
+app.use("/api/questions", questionRoutes);
+
+app.use("/api/contact", contactRoutes);
 // API route for an admin to verify a donation
 /*app.patch("/donations/:id/verify", authenticateUser, async (req, res) => {
   try {

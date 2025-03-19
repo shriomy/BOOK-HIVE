@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { UserContext } from "../../UserContext.jsx";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "axios";
 import { FaUserCircle } from "react-icons/fa";
 
@@ -11,6 +11,7 @@ export default function ProfilePage() {
   const [redirect, setRedirect] = useState(null);
   const [loading, setLoading] = useState(true);
   const [avatar, setAvatar] = useState(null);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   async function logout() {
     try {
@@ -22,8 +23,24 @@ export default function ProfilePage() {
     }
   }
 
-  function deleteAccount() {
-    alert("Account deletion feature coming soon!");
+  async function deleteAccount() {
+    if (window.confirm("Are you sure you want to delete your account?")) {
+      try {
+        setLoading(true);
+        await axios.delete(`/api/auth/users/${user._id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setUser(null);
+        setRedirect("/login");
+      } catch (error) {
+        console.error("Account deletion failed:", error);
+        alert("An error occurred while deleting the account.");
+      } finally {
+        setLoading(false);
+      }
+    }
   }
 
   function handleAvatarUpload(event) {
@@ -66,29 +83,57 @@ export default function ProfilePage() {
     return <Navigate to={redirect} />;
   }
 
+  // Navigate on item click
+  function handleItemClick(title) {
+    switch (title) {
+      case "Your Donations":
+        navigate("/account/donations"); // Replace with the actual route for donations
+        break;
+      case "Your Books":
+        navigate("/books"); // Replace with the actual route for books
+        break;
+      case "Software":
+        navigate("/software"); // Replace with the actual route for software
+        break;
+      case "Application":
+        navigate("/applications"); // Replace with the actual route for applications
+        break;
+      default:
+        break;
+    }
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#3E2723] 70% to-[#000000] 30% overflow-hidden relative p-4">
-      <div className="w-full max-w-md bg-[#3E2723] shadow-lg rounded-2xl p-6 text-center flex flex-col items-center text-[#edbf6d]">
+    <div className="flex min-h-screen bg-gradient-to-br from-[#2c1f19] via-[#3e2723] to-[#000000] p-10">
+      {/* Left Panel */}
+      <div className="w-1/3 bg-black text-white p-10 rounded-2xl flex flex-col items-center justify-center shadow-lg">
         <label className="relative cursor-pointer">
           {avatar ? (
             <img
               src={avatar}
               alt="Avatar"
-              className="w-24 h-24 rounded-full object-cover border-4 border-[#edbf6d]"
+              className="w-40 h-40 rounded-full object-cover border-4 border-white shadow-lg"
             />
           ) : (
-            <FaUserCircle className="w-24 h-24 text-[#edbf6d]" />
+            <FaUserCircle className="w-40 h-40 text-white" />
           )}
           <input type="file" className="hidden" onChange={handleAvatarUpload} />
         </label>
 
         <h2 className="text-2xl font-semibold mt-4">{user.name}</h2>
-        <p className="text-[#d9a856] text-sm">{user.email}</p>
+        <p className="text-white text-sm">{user.email}</p>
+
+        <p className="text-lg text-center mt-4">
+          I am happy to know you that 300+ projects done successfully!
+        </p>
+        <button className="mt-6 px-6 py-2 border border-white rounded-lg hover:bg-white hover:text-blue-600 transition">
+          LEARN MORE
+        </button>
 
         <div className="mt-6 w-full flex flex-col gap-2">
           <button
             onClick={logout}
-            className="bg-[#edbf6d] text-[#00032e] hover:bg-[#d9a856] p-2 w-full rounded-2xl"
+            className="bg-white text-blue-600 hover:bg-gray-200 p-2 w-full rounded-2xl"
           >
             Logout
           </button>
@@ -99,6 +144,27 @@ export default function ProfilePage() {
             Delete Account
           </button>
         </div>
+      </div>
+
+      {/* Right Panel */}
+      <div className="w-2/3 grid grid-cols-2 gap-6 p-6">
+        {[
+          { title: "Your Donations", color: "border-yellow-500", icon: "💰" },
+          { title: "Your Books", color: "border-blue-500", icon: "📚" },
+          { title: "Software", color: "border-blue-500", icon: "💻" },
+          { title: "Application", color: "border-yellow-500", icon: "📱" },
+        ].map((item, index) => (
+          <div
+            key={index}
+            onClick={() => handleItemClick(item.title)} // Handle navigation on click
+            className="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center border-b-4 hover:shadow-xl transition cursor-pointer"
+          >
+            <span className="text-4xl">{item.icon}</span>
+            <h3 className="mt-4 text-lg font-semibold">{item.title}</h3>
+
+            <div className={`w-full h-1 mt-4 ${item.color}`}></div>
+          </div>
+        ))}
       </div>
     </div>
   );

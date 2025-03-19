@@ -52,4 +52,37 @@ const donationverify = (req, res, next) => {
   });
 };
 
-module.exports = { authMiddleware, authenticateUser, donationverify };
+const deleteauth = async (req, res, next) => {
+  try {
+    // Get token from headers
+    const token = req.header("Authorization").replace("Bearer ", "");
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Attach user to the request object
+    req.user = decoded;
+
+    // Check if the logged-in user is trying to delete their own account
+    if (req.user.id !== req.params.id) {
+      return res
+        .status(403)
+        .json({ message: "You are not authorized to delete this account" });
+    }
+
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: "Authentication failed" });
+  }
+};
+
+module.exports = {
+  authMiddleware,
+  authenticateUser,
+  donationverify,
+  deleteauth,
+};

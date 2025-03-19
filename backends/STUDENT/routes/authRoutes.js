@@ -6,8 +6,9 @@ const {
   loginUser,
   getProfile,
   logoutUser,
+  deleteUser,
 } = require("../controllers/authController");
-const { authMiddleware } = require("../middlewares/authMiddleware");
+const { authMiddleware, deleteauth } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 const upload = multer();
@@ -17,5 +18,6 @@ router.post("/verify-otp", verifyOtp);
 router.post("/login", loginUser);
 router.get("/profile", authMiddleware, getProfile);
 router.post("/logout", authMiddleware, logoutUser);
+router.delete("/users/:id", deleteauth, deleteUser);
 
 module.exports = router;
