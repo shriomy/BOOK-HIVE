@@ -6,6 +6,7 @@ import UserTable from "../../components/user-details-table/userTable";
 import Profile from "../../assets/images/profile.png";
 import LogoutLogo from "../../assets/svg/logoutLogo.svg";
 import AllBooks from "../../components/all-books/allBooks";
+import BorrowBook from "../../components/borrowBook/borrowBook";
 import AllDonations from "../../components/all-donations/allDonations";
 import DashboardHome from "../../components/dashboardHome/dashboardHome";
 import BookReviews from "../../components/book-reviews/bookReviews";
@@ -131,7 +132,7 @@ const Dashboard = () => {
           {isActive === "home" && <DashboardHome />}
           {isActive === "user" ? <UserTable /> : ""}
           {isActive === "books" ? <AllBooks /> : ""}
-          {isActive === "borrow" ? "" : ""}
+          {isActive === "borrow" ? <BorrowBook/> : ""}
           {isActive === "account" ? "" : ""}
           {isActive === "donation" ? <AllDonations /> : ""}
           {isActive === "reviews" ? <BookReviews /> : ""}

@@ -47,7 +47,7 @@ export default function LoginPage() {
     setOpen(true);
 
     try {
-      const { data } = await axios.post("http://localhost:5000/auth/login", {
+      const { data } = await axios.post("http://localhost:3000/auth/login", {
         email,
         password,
       });
