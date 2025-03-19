@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 // Import routes
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
+const adminBookRoutes = require("./routes/adminBookRoutes");
 const donationRoutes = require("./routes/donationRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 // Middleware
@@ -26,6 +27,7 @@ require("./config/database");
 // Routes
 app.use("/auth", authRoutes);
 app.use("/", userRoutes);
+app.use("/books", adminBookRoutes);
 
 // Test route
 app.get("/test", (req, res) => {
@@ -38,6 +40,6 @@ app.use("/api/donations", donationRoutes);
 app.use("/", reviewRoutes);
 
 // Start server
-app.listen(5000, () => {
-  console.log("Server is running on port 5000");
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
 });

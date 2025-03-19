@@ -22,7 +22,7 @@ const BookReviews = () => {
     const fetchReviews = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/api/reviews", {
+        const response = await axios.get("http://localhost:3000/api/reviews", {
           withCredentials: true,
         });
         setReviews(response.data);
@@ -51,7 +51,7 @@ const BookReviews = () => {
   const handleDeleteReview = async (bookId, reviewId) => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/${bookId}/review/${reviewId}`,
+        `http://localhost:3000/api/${bookId}/review/${reviewId}`,
         {
           withCredentials: true,
         }

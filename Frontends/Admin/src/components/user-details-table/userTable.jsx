@@ -23,7 +23,7 @@ const UserTable = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/user", {
+        const response = await axios.get("http://localhost:3000/user", {
           withCredentials: true, // Ensure cookies (JWT) are sent
         });
         setUsers(response.data); // Set the users in the state
@@ -42,7 +42,7 @@ const UserTable = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/user/${userId}/idcard`, // API endpoint for ID card
+        `http://localhost:3000/user/${userId}/idcard`, // API endpoint for ID card
         {
           responseType: "arraybuffer", // Important for binary image data
         }

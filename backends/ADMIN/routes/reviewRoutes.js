@@ -1,6 +1,6 @@
 // This goes in your API routes file (e.g., routes/reviews.js)
 const express = require("express");
-const Book = require("../models/Reviews"); // Adjust path as needed
+const Book = require("../models/AdminBookModel"); // Adjust path as needed
 const router = express.Router();
 
 // GET all reviews across all books

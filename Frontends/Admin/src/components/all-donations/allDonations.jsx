@@ -14,8 +14,8 @@ import {
   IconButton,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import UserDelete from "../../assets/svg/UserDelete.svg";
 import ViewInfo from "../../assets/svg/info.svg";
+import trash from "../../assets/svg/trash.svg";
 
 const DonationTable = () => {
   const [donations, setDonations] = useState([]);
@@ -30,7 +30,7 @@ const DonationTable = () => {
 
   const fetchDonations = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/donations", {
+      const response = await axios.get("http://localhost:3000/api/donations", {
         withCredentials: true,
       });
       setDonations(response.data);
@@ -43,7 +43,7 @@ const DonationTable = () => {
     setOpenModal(true);
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/donations/${donationId}/idcard`,
+        `http://localhost:3000/api/donations/${donationId}/idcard`,
         { responseType: "arraybuffer" }
       );
       const base64Image = arrayBufferToBase64(response.data);
@@ -81,7 +81,7 @@ const DonationTable = () => {
     if (!selectedDonation) return;
     try {
       await axios.put(
-        `http://localhost:5000/api/donations/${selectedDonation._id}/status`,
+        `http://localhost:3000/api/donations/${selectedDonation._id}/status`,
         { verified: newStatus === "Accepted" },
         { withCredentials: true }
       );
@@ -94,7 +94,7 @@ const DonationTable = () => {
 
   const handleDelete = async (donationId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/donations/${donationId}`, {
+      await axios.delete(`http://localhost:3000/api/donations/${donationId}`, {
         withCredentials: true,
       });
       fetchDonations();
@@ -165,7 +165,7 @@ const DonationTable = () => {
                 <td>
                   <IconButton onClick={() => handleDelete(donation._id)}>
                     <img
-                      src={UserDelete}
+                      src={trash}
                       alt="delete"
                       className="delete-icon"
                     />
