@@ -5,6 +5,7 @@ import "react-calendar/dist/Calendar.css";
 
 export default function Footer() {
   const [isHovered, setIsHovered] = useState(true);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     // Ensure the Lordicon script is loaded
@@ -13,10 +14,31 @@ export default function Footer() {
     script.async = true;
     document.body.appendChild(script);
 
+    // Add scroll event listener to show/hide the scroll-to-top button
+    const handleScroll = () => {
+      // Show button when user scrolls down 300px from the top
+      if (window.scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
     return () => {
       document.body.removeChild(script);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // Function to scroll to top
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <div className="relative">
@@ -121,6 +143,32 @@ export default function Footer() {
           style={{ width: "55px", height: "55px" }} // Adjust icon size
         ></lord-icon>
       </Link>
+
+      {/* Scroll to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-16 right-6 bg-white bg-opacity-75 text-black p-3 rounded-full shadow-xl transition-all duration-500 ease-in-out flex items-center justify-center ${
+          showScrollTop
+            ? "opacity-100 transform translate-y-0"
+            : "opacity-0 transform translate-y-10 pointer-events-none"
+        }`}
+        aria-label="Scroll to top"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 10l7-7m0 0l7 7m-7-7v18"
+          />
+        </svg>
+      </button>
 
       {/* Copyright */}
       <div className="absolute bottom-0 left-0 p-4 text-white text-xs text-center w-full bg-black bg-opacity-70">
