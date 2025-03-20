@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import CustomAlert from "../components/CustomAlert"; // Import our custom alert component
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -11,13 +12,20 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [idcardPreview, setIdcardPreview] = useState(null); // State for image preview
 
+  // New alert states
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertVariant, setAlertVariant] = useState("success");
+
   const navigate = useNavigate();
 
   async function registerUser(ev) {
     ev.preventDefault();
 
     if (!idcard) {
-      alert("Please upload your ID card.");
+      setAlertMessage("Please upload your ID card.");
+      setAlertVariant("warning");
+      setShowAlert(true);
       return;
     }
 
@@ -36,20 +44,28 @@ export default function RegisterPage() {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      alert(response.data.message); // Show success message
+      // Show success alert instead of JavaScript alert
+      setAlertMessage(response.data.message);
+      setAlertVariant("success");
+      setShowAlert(true);
 
       // Store userId for OTP verification
       localStorage.setItem("userId", response.data.userId);
       console.log("Stored userId:", response.data.userId);
 
-      // Navigate to OTP page after successful registration
-      console.log("Navigating to OTP page...");
-      navigate("/verify-otp");
+      // Navigate to OTP page after short delay (to allow user to see the message)
+      setTimeout(() => {
+        console.log("Navigating to OTP page...");
+        navigate("/verify-otp");
+      }, 2000);
     } catch (e) {
-      alert(
+      // Show error alert
+      setAlertMessage(
         "Registration failed! " +
           (e.response?.data?.message || "Please try again.")
       );
+      setAlertVariant("danger");
+      setShowAlert(true);
     }
   }
 
@@ -88,6 +104,15 @@ export default function RegisterPage() {
             <h1 className="text-4xl text-center text-white font-bold">
               Register
             </h1>
+
+            {/* Custom Alert Component */}
+            <CustomAlert
+              show={showAlert}
+              variant={alertVariant}
+              message={alertMessage}
+              onClose={() => setShowAlert(false)}
+            />
+
             <form className="mt-6 space-y-5" onSubmit={registerUser}>
               <div className="space-y-3">
                 <input

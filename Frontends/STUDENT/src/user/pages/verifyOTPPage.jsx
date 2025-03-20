@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import CustomAlert from "../components/CustomAlert"; // Import the CustomAlert component
 
 export default function VerifyOTPPage() {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
+  const [alert, setAlert] = useState({
+    show: false,
+    message: "",
+    variant: "danger",
+  });
   const navigate = useNavigate();
 
   // Retrieve userId from localStorage
@@ -14,7 +20,11 @@ export default function VerifyOTPPage() {
     ev.preventDefault();
 
     if (!userId) {
-      setError("User ID is missing. Please restart the registration process.");
+      setAlert({
+        show: true,
+        message: "User ID is missing. Please restart the registration process.",
+        variant: "danger",
+      });
       return;
     }
 
@@ -33,16 +43,34 @@ export default function VerifyOTPPage() {
         response.data.message ===
         "Email verified successfully! Welcome email sent."
       ) {
-        alert("OTP verified successfully! A welcome email has been sent.");
+        setAlert({
+          show: true,
+          message: "OTP verified successfully! A welcome email has been sent.",
+          variant: "success",
+        });
         localStorage.removeItem("userId");
-        navigate("/login"); // Redirect after successful verification
+        setTimeout(() => {
+          navigate("/login"); // Redirect after successful verification
+        }, 2000); // Short delay to allow user to see the success message
       } else {
-        setError("Invalid OTP. Please try again.");
+        setAlert({
+          show: true,
+          message: "Invalid OTP. Please try again.",
+          variant: "danger",
+        });
       }
     } catch (e) {
       console.error(e); // Log any error details
-      setError(e.response?.data?.message || "Error verifying OTP.");
+      setAlert({
+        show: true,
+        message: e.response?.data?.message || "Error verifying OTP.",
+        variant: "danger",
+      });
     }
+  };
+
+  const handleAlertClose = () => {
+    setAlert({ ...alert, show: false });
   };
 
   return (
@@ -69,6 +97,16 @@ export default function VerifyOTPPage() {
           </button>
         </form>
       </div>
+
+      {/* Custom Alert Component */}
+      <CustomAlert
+        show={alert.show}
+        message={alert.message}
+        variant={alert.variant}
+        onClose={handleAlertClose}
+        autoClose={true}
+        duration={5000}
+      />
     </div>
   );
 }

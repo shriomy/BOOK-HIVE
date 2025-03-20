@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { UserContext } from "../../UserContext.jsx";
-import { Navigate, useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Navigate, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaUserCircle } from "react-icons/fa";
 
@@ -11,7 +11,8 @@ export default function ProfilePage() {
   const [redirect, setRedirect] = useState(null);
   const [loading, setLoading] = useState(true);
   const [avatar, setAvatar] = useState(null);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [showPopup, setShowPopup] = useState(false); // State for popup
+  const navigate = useNavigate();
 
   async function logout() {
     try {
@@ -23,23 +24,22 @@ export default function ProfilePage() {
     }
   }
 
-  async function deleteAccount() {
-    if (window.confirm("Are you sure you want to delete your account?")) {
-      try {
-        setLoading(true);
-        await axios.delete(`/api/auth/users/${user._id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        setUser(null);
-        setRedirect("/login");
-      } catch (error) {
-        console.error("Account deletion failed:", error);
-        alert("An error occurred while deleting the account.");
-      } finally {
-        setLoading(false);
-      }
+  async function confirmDeleteAccount() {
+    try {
+      setLoading(true);
+      await axios.delete(`/api/auth/users/${user._id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setUser(null);
+      setRedirect("/login");
+    } catch (error) {
+      console.error("Account deletion failed:", error);
+      alert("An error occurred while deleting the account.");
+    } finally {
+      setLoading(false);
+      setShowPopup(false); // Close the popup after action
     }
   }
 
@@ -64,7 +64,7 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#3E2723] 70% to-[#000000] 30% z-20">
+      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#3E2723] to-[#000000] z-20">
         <DotLottieReact
           src="https://lottie.host/e01dd401-545e-4152-ad07-1846b8e1ea3d/bgf5mRGQ23.lottie"
           loop
@@ -83,20 +83,19 @@ export default function ProfilePage() {
     return <Navigate to={redirect} />;
   }
 
-  // Navigate on item click
   function handleItemClick(title) {
     switch (title) {
       case "Your Donations":
-        navigate("/account/donations"); // Replace with the actual route for donations
+        navigate("/account/donations");
         break;
       case "Your Books":
-        navigate("/books"); // Replace with the actual route for books
+        navigate("/books");
         break;
       case "Software":
-        navigate("/software"); // Replace with the actual route for software
+        navigate("/software");
         break;
       case "Application":
-        navigate("/applications"); // Replace with the actual route for applications
+        navigate("/applications");
         break;
       default:
         break;
@@ -138,7 +137,7 @@ export default function ProfilePage() {
             Logout
           </button>
           <button
-            onClick={deleteAccount}
+            onClick={() => setShowPopup(true)} // Open the popup
             className="bg-gray-700 text-white hover:bg-gray-600 p-2 w-full rounded-2xl"
           >
             Delete Account
@@ -156,16 +155,44 @@ export default function ProfilePage() {
         ].map((item, index) => (
           <div
             key={index}
-            onClick={() => handleItemClick(item.title)} // Handle navigation on click
+            onClick={() => handleItemClick(item.title)}
             className="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center border-b-4 hover:shadow-xl transition cursor-pointer"
           >
             <span className="text-4xl">{item.icon}</span>
             <h3 className="mt-4 text-lg font-semibold">{item.title}</h3>
-
             <div className={`w-full h-1 mt-4 ${item.color}`}></div>
           </div>
         ))}
       </div>
+
+      {/* Delete Account Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+            <h2 className="text-xl font-semibold mb-4">
+              Confirm Account Deletion
+            </h2>
+            <p>
+              Are you sure you want to delete your account? This action cannot
+              be undone.
+            </p>
+            <div className="mt-4 flex justify-center gap-4">
+              <button
+                onClick={confirmDeleteAccount}
+                className="bg-red-600 text-white px-4 py-2 rounded-lg"
+              >
+                Yes, Delete
+              </button>
+              <button
+                onClick={() => setShowPopup(false)}
+                className="bg-gray-300 px-4 py-2 rounded-lg"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
