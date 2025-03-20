@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../../index.css";
-
 import axios from "axios";
+import CustomAlert from "../components/CustomAlert"; // Import the CustomAlert component
 
 export default function DonationPage() {
   const [bookTitle, setBookTitle] = useState("");
@@ -13,6 +13,15 @@ export default function DonationPage() {
   const [message, setMessage] = useState("");
   const [donationSuccess, setDonationSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [alert, setAlert] = useState({
+    show: false,
+    message: "",
+    variant: "danger",
+  });
+
+  const handleAlertClose = () => {
+    setAlert({ ...alert, show: false });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -38,6 +47,11 @@ export default function DonationPage() {
       !formData.donorContact
     ) {
       setErrorMessage("All required fields must be filled.");
+      setAlert({
+        show: true,
+        message: "All required fields must be filled.",
+        variant: "danger",
+      });
       return;
     }
 
@@ -56,14 +70,30 @@ export default function DonationPage() {
       if (response.data) {
         setDonationSuccess(true);
         setErrorMessage(""); // Clear error message if donation is successful
+        setAlert({
+          show: true,
+          message: "Thank you for your donation!",
+          variant: "success",
+        });
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        alert("You need to log in before donating a book.");
-        window.location.href = "/login"; // Redirect to login page
+        setAlert({
+          show: true,
+          message: "You need to log in before donating a book.",
+          variant: "danger",
+        });
+        setTimeout(() => {
+          window.location.href = "/login"; // Redirect to login page
+        }, 2000);
       } else {
         console.error("Error occurred during donation submission:", error);
         setErrorMessage("An error occurred while submitting your donation.");
+        setAlert({
+          show: true,
+          message: "An error occurred while submitting your donation.",
+          variant: "danger",
+        });
       }
     }
   };
@@ -173,6 +203,16 @@ export default function DonationPage() {
           </form>
         </div>
       </div>
+
+      {/* Custom Alert Component */}
+      <CustomAlert
+        show={alert.show}
+        message={alert.message}
+        variant={alert.variant}
+        onClose={handleAlertClose}
+        autoClose={true}
+        duration={5000}
+      />
     </div>
   );
 }

@@ -1,11 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import CustomAlert from "../components/CustomAlert"; // Import the CustomAlert component
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState({
+    show: false,
+    message: "",
+    variant: "danger",
+  });
 
   async function handleSubmit(ev) {
     ev.preventDefault();
@@ -25,18 +31,36 @@ const Login = () => {
         // Optionally, store user data in state
         // setUser(data.user);
 
-        alert("Login successful");
+        setAlert({
+          show: true,
+          message: "Login successful",
+          variant: "success",
+        });
 
         // Redirect to another page after successful login
-        navigate("/"); // Change the route as needed
+        setTimeout(() => {
+          navigate("/"); // Change the route as needed
+        }, 2000); // Short delay to allow user to see the success message
       } else {
-        alert("Login failed");
+        setAlert({
+          show: true,
+          message: "Login failed",
+          variant: "danger",
+        });
       }
     } catch (e) {
-      alert("Login failed");
+      setAlert({
+        show: true,
+        message: e.response?.data?.message || "Login failed",
+        variant: "danger",
+      });
       console.error(e);
     }
   }
+
+  const handleAlertClose = () => {
+    setAlert({ ...alert, show: false });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#3E2723] 70% to-[#000000] 30% h-screen overflow-hidden relative">
@@ -114,6 +138,16 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+      {/* Custom Alert Component */}
+      <CustomAlert
+        show={alert.show}
+        message={alert.message}
+        variant={alert.variant}
+        onClose={handleAlertClose}
+        autoClose={true}
+        duration={5000}
+      />
     </div>
   );
 };
