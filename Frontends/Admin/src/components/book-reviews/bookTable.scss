@@ -1,139 +1,65 @@
-/* Table Container */
-.table-container {
-  width: 100%;
-  overflow-x: auto;
-  margin: 20px 0;
+.books-head {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #1976d2;
 }
 
-/* Full Table */
+.table-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
 .responsive-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 0;
-  border-radius: 10px;
-  overflow: hidden;
-  background-color: rgb(255, 255, 255); /* Red Table Background */
+  border-spacing: 0;
+  
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  th {
+    background-color: #f7f9fc;
+    color: #1565c0;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  tbody tr {
+    &:hover {
+      background-color: #f5f9ff;
+    }
+  }
+  
+  .review-row {
+    transition: background-color 0.2s ease;
+    
+    &:nth-child(even) {
+      background-color: #fafbfd;
+    }
+    
+    .book-title {
+      font-weight: 500;
+      color: #1976d2;
+    }
+  }
 }
 
-/* Table Header */
-.tab-hed {
-  background-color: rgba(248, 248, 255, 1);
-  text-align: center;
-  font-weight: bold;
-}
-.table-name {
-  text-align: justify;
-}
-
-/* Table Row Alternating Colors */
-.odd-row {
-  background-color: white;
-}
-
-.even-row {
-  background-color: #f0f0f0;
-}
-
-.responsive-table th,
-.responsive-table td {
-  padding: 12px;
-  text-align: justify;
-  vertical-align: middle;
-}
-
-.profile-img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: white;
-}
-
-.name-cont {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.users-head {
-  display: flex;
-  justify-content: space-between;
-  background-color: rgb(255, 255, 255);
-  padding: 15px 0px;
-  border-radius: 10px;
-}
-
-.name-profile {
-  font-family: "Inter";
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.email-profile {
-  font-family: "Inter";
-  font-size: 14px;
-  font-weight: 400;
-  color: #64748b;
-}
-
-.date-field,
-.role-field {
-  font-family: "Inter";
-  font-weight: 600;
-  font-size: 14px;
-  color: #3a354e;
-}
-
-.id-card-field {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-family: "Inter";
-  font-weight: 500;
-  font-size: 14px;
-  color: #0089f1;
-}
-
-/* Delete Icon */
-.delete-icon {
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.delete-icon:hover {
-  transform: scale(1.1);
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
+// Responsive adjustments
+@media screen and (max-width: 768px) {
   .responsive-table {
     display: block;
-    width: 100%;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .responsive-table th,
-  .responsive-table td {
-    display: block;
-    width: 100%;
-    text-align: right;
-  }
-
-  .responsive-table td {
-    position: relative;
-    padding-left: 50%;
-  }
-
-  .responsive-table td:before {
-    content: attr(data-label);
-    position: absolute;
-    left: 10px;
-    font-weight: bold;
-  }
-}
-
-@media (max-width: 480px) {
-  .responsive-table td:before {
-    font-size: 14px;
+    
+    th, td {
+      white-space: nowrap;
+    }
   }
 }
