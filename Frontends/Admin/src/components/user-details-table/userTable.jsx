@@ -18,6 +18,8 @@ const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [idCardImage, setIdCardImage] = useState(null);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
 
   // Fetch users from the backend
   useEffect(() => {
@@ -72,6 +74,30 @@ const UserTable = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
     setIdCardImage(null); // Clear the image data
+  };
+
+  // Function to delete a user
+  const openDeleteConfirm = (userId) => {
+    setUserToDelete(userId);
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      await axios.delete(`http://localhost:3000/user/${userToDelete}`, {
+        withCredentials: true,
+      });
+
+      // Update the users state after successful deletion
+      setUsers(users.filter((user) => user._id !== userToDelete));
+
+      // Close the dialog
+      setDeleteConfirmOpen(false);
+      setUserToDelete(null);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      setDeleteConfirmOpen(false);
+    }
   };
 
   return (
@@ -140,7 +166,12 @@ const UserTable = () => {
                   </Typography>
                 </td>
                 <td>
-                  <img src={UserDelete} alt="delete" className="delete-icon" />
+                  <img
+                    src={UserDelete}
+                    alt="delete"
+                    className="delete-icon"
+                    onClick={() => openDeleteConfirm(user._id)}
+                  />
                 </td>
               </tr>
             ))}
@@ -172,6 +203,27 @@ const UserTable = () => {
         <DialogActions>
           <Button onClick={handleCloseModal} color="primary">
             Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={deleteConfirmOpen}
+        onClose={() => setDeleteConfirmOpen(false)}
+      >
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to delete this user? This action cannot be
+            undone.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteConfirmOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteUser} color="error" variant="contained">
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

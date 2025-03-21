@@ -7,4 +7,6 @@ router.get("/user", userController.getAllUsers);
 
 router.get("/user/:id/idcard", userController.getUserIdCard);
 
+router.delete("/user/:id", userController.deleteUser);
+
 module.exports = router;
