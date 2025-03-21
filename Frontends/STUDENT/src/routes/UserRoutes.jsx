@@ -15,6 +15,7 @@ import ContactUsPage from "../user/pages/ContactUsPage";
 import FeedbackPage from "../user/pages/FeedbackPage";
 import BooksPage from "../user/pages/BooksPage";
 import BookDetailsPage from "../user/pages/BookDetailsPage";
+import MyTicketsPage from "../user/pages/MyTicketsPage";
 
 const pageVariants = {
   initial: { opacity: 0, x: 100 },
@@ -208,6 +209,32 @@ const UserRoutes = () => {
                 exit="exit"
               >
                 <BookDetailsPage />
+              </motion.div>
+            }
+          />
+          <Route
+            path="contact/your-tickets"
+            element={
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <MyTicketsPage />
+              </motion.div>
+            }
+          />
+          <Route
+            path="contacts/:contactId"
+            element={
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <MyTicketsPage />
               </motion.div>
             }
           />

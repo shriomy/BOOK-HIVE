@@ -1,9 +1,18 @@
-// routes/contactRoutes.js
 const express = require("express");
-const router = express.Router();
-const contactController = require("../controllers/contactController");
+const {
+  submitContact,
+  getContacts,
+  getContactById,
+} = require("../controllers/contactController");
+const {
+  authenticateUser,
+  donationverify,
+} = require("../middlewares/authMiddleware");
 
-// POST route to handle contact form submission
-router.post("/submit", contactController.saveContactForm);
+const router = express.Router();
+
+router.post("/submit", authenticateUser, submitContact);
+router.get("/allcontacts", donationverify, getContacts);
+//router.get("/contact/:id", authenticateUser, getContactById);
 
 module.exports = router;
