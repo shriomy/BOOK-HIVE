@@ -62,7 +62,7 @@ const MyTicketsPage = () => {
                     key={contact._id}
                     onClick={() => navigate(`/contacts/${contact._id}`)}
                     className={`border-b border-gray-600 cursor-pointer ${
-                      contact.replied ? "bg-[#4CAF50]" : "bg-[#FFA500]"
+                      contact.replied ? "bg-[#4CAF50]" : "bg-[#1e1b18]"
                     } hover:bg-[#4a2f27] transition-all duration-200`}
                   >
                     <td className="py-4 px-6">{contact.name}</td>

@@ -15,6 +15,7 @@ const contactSchema = new mongoose.Schema({
   },
   createdAt: { type: Date, default: Date.now }, // Auto-set if not provided
   replied: { type: Boolean, default: false }, // New field with default value
+  reply: { type: String, default: "" },
 });
 
 const Contact = mongoose.model("Contact", contactSchema);

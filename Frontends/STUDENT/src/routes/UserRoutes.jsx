@@ -16,6 +16,7 @@ import FeedbackPage from "../user/pages/FeedbackPage";
 import BooksPage from "../user/pages/BooksPage";
 import BookDetailsPage from "../user/pages/BookDetailsPage";
 import MyTicketsPage from "../user/pages/MyTicketsPage";
+import TicketSinglePage from "../user/pages/TicketSinglePage";
 
 const pageVariants = {
   initial: { opacity: 0, x: 100 },
@@ -234,7 +235,7 @@ const UserRoutes = () => {
                 animate="animate"
                 exit="exit"
               >
-                <MyTicketsPage />
+                <TicketSinglePage />
               </motion.div>
             }
           />
