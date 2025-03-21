@@ -61,7 +61,7 @@ app.use("/api/reviews", reviewRoutes);
 
 app.use("/api/questions", questionRoutes);
 
-app.use("/api/contact", contactRoutes);
+app.use("/api/contacts", contactRoutes);
 // API route for an admin to verify a donation
 /*app.patch("/donations/:id/verify", authenticateUser, async (req, res) => {
   try {

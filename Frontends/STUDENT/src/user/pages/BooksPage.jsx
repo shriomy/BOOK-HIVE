@@ -23,10 +23,6 @@ const BooksPage = () => {
     fetchBooks();
   }, []);
 
-  if (loading) {
-    return <div className="text-center text-xl text-[#edbf6d]">Loading...</div>;
-  }
-
   if (error) {
     return <div className="text-center text-red-500 text-lg">{error}</div>;
   }
