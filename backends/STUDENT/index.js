@@ -20,6 +20,7 @@ const bookRoutes = require("./routes/bookRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const questionRoutes = require("./routes/questionRoutes");
 const contactRoutes = require("./routes/contactRoutes");
+const borrowRoutes = require("./routes/borrowRoutes");
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 require("dotenv").config();
@@ -62,6 +63,10 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/questions", questionRoutes);
 
 app.use("/api/contacts", contactRoutes);
+
+// In your main server.js or app.js file
+
+app.use(borrowRoutes);
 // API route for an admin to verify a donation
 /*app.patch("/donations/:id/verify", authenticateUser, async (req, res) => {
   try {
