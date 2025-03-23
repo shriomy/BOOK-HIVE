@@ -19,9 +19,16 @@ const BooksPage = () => {
         setLoading(false);
       }
     };
-
     fetchBooks();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#2c1f19] via-[#3e2723] to-[#000000] flex items-center justify-center">
+        <div className="text-[#edbf6d] text-xl">Loading books...</div>
+      </div>
+    );
+  }
 
   if (error) {
     return <div className="text-center text-red-500 text-lg">{error}</div>;
@@ -40,9 +47,13 @@ const BooksPage = () => {
               className="book-card bg-[#1e1b18] p-6 rounded-lg shadow-lg transform transition duration-300 hover:scale-105"
             >
               <img
-                src={`http://localhost:4000/${book.bookImage}`}
+                src={`http://localhost:4000/api/books/${book._id}/image`}
                 alt={book.title}
                 className="book-image w-full h-48 object-cover rounded-md mb-4"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/placeholder-book.png"; // Fallback image
+                }}
               />
               <h2 className="text-2xl text-[#edbf6d] font-semibold mb-2">
                 {book.title}

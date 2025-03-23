@@ -18,7 +18,7 @@ import {
   Tooltip,
   Paper,
   Fade,
-  CircularProgress
+  CircularProgress,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import edit from "../../assets/svg/edit.svg";
@@ -202,19 +202,21 @@ const BooksTable = () => {
     try {
       // Check if a book with the same title already exists
       const existingBook = books.find(
-        book => book.title.toLowerCase() === newBook.title.toLowerCase()
+        (book) => book.title.toLowerCase() === newBook.title.toLowerCase()
       );
-  
+
       if (existingBook) {
         // If the book exists, increase its count
-        const updatedBookCount = parseInt(existingBook.bookCount) + parseInt(newBook.bookCount || 1);
-        
+        const updatedBookCount =
+          parseInt(existingBook.bookCount) + parseInt(newBook.bookCount || 1);
+
         // Update the existing book
-        await axios.put(`http://localhost:3000/books/${existingBook._id}`, 
+        await axios.put(
+          `http://localhost:3000/books/${existingBook._id}`,
           { bookCount: updatedBookCount },
-          { headers: { "Content-Type": "application/json" }}
+          { headers: { "Content-Type": "application/json" } }
         );
-  
+
         fetchBooks();
         setOpenAddModal(false);
         setNewBook({
@@ -236,11 +238,11 @@ const BooksTable = () => {
         Object.entries(newBook).forEach(([key, value]) => {
           formData.append(key, value);
         });
-  
+
         await axios.post("http://localhost:3000/books", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-  
+
         fetchBooks();
         setOpenAddModal(false);
         setNewBook({
@@ -373,10 +375,7 @@ const BooksTable = () => {
           <span className="mr-2">📚</span>
           Library Collection
         </h2>
-        <StyledButton
-          variant="contained"
-          onClick={() => setOpenAddModal(true)}
-        >
+        <StyledButton variant="contained" onClick={() => setOpenAddModal(true)}>
           + Add Book
         </StyledButton>
       </div>
@@ -515,8 +514,12 @@ const BooksTable = () => {
         <Fade in={true}>
           <div className="flex flex-col items-center justify-center p-12 text-gray-500">
             <div className="text-6xl mb-4 opacity-70">🔍</div>
-            <p className="text-lg">No books found matching your search criteria</p>
-            <p className="text-sm mt-2">Try adjusting your search terms or filters</p>
+            <p className="text-lg">
+              No books found matching your search criteria
+            </p>
+            <p className="text-sm mt-2">
+              Try adjusting your search terms or filters
+            </p>
           </div>
         </Fade>
       )}
@@ -737,7 +740,9 @@ const BooksTable = () => {
             />
 
             <div className="mt-4">
-              <p className="mb-2 text-gray-700 font-medium">Update Book Cover:</p>
+              <p className="mb-2 text-gray-700 font-medium">
+                Update Book Cover:
+              </p>
               <input
                 type="file"
                 accept="image/*"
@@ -751,7 +756,9 @@ const BooksTable = () => {
               />
             </div>
           </DialogContent>
-          <DialogActions sx={{ justifyContent: "center", padding: "16px", gap: "16px" }}>
+          <DialogActions
+            sx={{ justifyContent: "center", padding: "16px", gap: "16px" }}
+          >
             <Button
               onClick={() => setOpenEditModal(false)}
               variant="outlined"
@@ -759,7 +766,10 @@ const BooksTable = () => {
                 borderRadius: "8px",
                 borderColor: "#3e2723",
                 color: "#3e2723",
-                "&:hover": { borderColor: "#2c1e1a", backgroundColor: "#f9f5f4" },
+                "&:hover": {
+                  borderColor: "#2c1e1a",
+                  backgroundColor: "#f9f5f4",
+                },
               }}
             >
               Cancel
@@ -788,9 +798,7 @@ const BooksTable = () => {
           ⚠️ Confirm Delete
         </DialogTitle>
         <DialogContent>
-          <p className="text-center mb-4">
-            Are you sure you want to delete:
-          </p>
+          <p className="text-center mb-4">Are you sure you want to delete:</p>
           {bookToDelete && (
             <div className="bg-gray-50 p-4 rounded-lg mb-4 text-center">
               <p className="font-bold text-lg">"{bookToDelete.title}"</p>
@@ -801,7 +809,9 @@ const BooksTable = () => {
             This action cannot be undone.
           </p>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "center", padding: "16px", gap: "16px" }}>
+        <DialogActions
+          sx={{ justifyContent: "center", padding: "16px", gap: "16px" }}
+        >
           <Button
             onClick={() => setOpenDeleteModal(false)}
             variant="outlined"

@@ -110,6 +110,14 @@ const BookDetailsPage = () => {
     setIsReviewsVisible(!isReviewsVisible);
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#2c1f19] via-[#3e2723] to-[#000000] flex items-center justify-center">
+        <div className="text-[#edbf6d] text-xl">Loading book details...</div>
+      </div>
+    );
+  }
+
   if (error) {
     return <div className="text-center text-red-500 text-lg">{error}</div>;
   }
@@ -125,9 +133,13 @@ const BookDetailsPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               <div className="flex flex-col items-center">
                 <img
-                  src={`http://localhost:4000/${book.bookImage}`}
+                  src={`http://localhost:4000/api/books/${id}/image`}
                   alt={book.title}
                   className="w-64 h-96 object-cover rounded-lg shadow-md"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "/placeholder-book.png"; // Fallback image
+                  }}
                 />
               </div>
               <div className="text-white">
@@ -283,7 +295,7 @@ const BookDetailsPage = () => {
               )}
             </div>
 
-            {/* Updated: Pass bookId to QAComponent */}
+            {/* Pass bookId to QAComponent */}
             <div>
               <QAComponent bookId={id} />
             </div>
