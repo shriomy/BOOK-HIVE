@@ -9,7 +9,7 @@ export function AdminContextProvider({ children }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/profile")
+      .get("http://localhost:3000/auth/profile")
       .then(({ data }) => {
         setUser(data);
         setReady(true);

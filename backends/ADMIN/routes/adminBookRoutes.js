@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { 
-  getBooks, 
-  getBookCover, 
-  addBook, 
-  updateBook, 
-  deleteBook 
+const {
+  getBooks,
+  getBookCover,
+  addBook,
+  updateBook,
+  deleteBook,
 } = require("../controllers/adminBookController");
 
 router.get("/", getBooks); // Fetch all books
