@@ -8,15 +8,12 @@ export default function Footer() {
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
-    // Ensure the Lordicon script is loaded
     const script = document.createElement("script");
     script.src = "https://cdn.lordicon.com/lordicon.js";
     script.async = true;
     document.body.appendChild(script);
 
-    // Add scroll event listener to show/hide the scroll-to-top button
     const handleScroll = () => {
-      // Show button when user scrolls down 300px from the top
       if (window.scrollY > 300) {
         setShowScrollTop(true);
       } else {
@@ -32,7 +29,6 @@ export default function Footer() {
     };
   }, []);
 
-  // Function to scroll to top
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -44,12 +40,9 @@ export default function Footer() {
     <div className="relative">
       <footer className="p-8 bg-black bg-opacity-70 backdrop-blur-md shadow-xl text-white">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
-          {/* Footer Title */}
           <div className="text-3xl font-extrabold text-center md:text-left">
             <span className="text-[#edbf6d]">Your Company</span>
           </div>
-
-          {/* Footer Links */}
           <div className="text-white flex flex-col items-center md:items-start space-y-2">
             <Link
               to="/about"
@@ -76,8 +69,6 @@ export default function Footer() {
               Terms of Service
             </Link>
           </div>
-
-          {/* Social Media Links */}
           <div className="flex space-x-6 text-white mt-4 md:mt-0">
             <a
               href="https://facebook.com"
@@ -104,23 +95,16 @@ export default function Footer() {
               <i className="fab fa-instagram"></i>
             </a>
           </div>
-
-          {/* Calendar on the Right Side */}
           <div className="text-white mb-4 md:mb-0 flex justify-center md:justify-end w-full md:w-auto">
             <div className="h-[350px] overflow-hidden">
-              {" "}
-              {/* Fixed height for calendar */}
               <Calendar
                 className="rounded-lg shadow-xl bg-[#2d2d2d] p-4"
-                tileClassName={({ date, view }) => {
-                  // Highlight the current day in blue
-                  if (
-                    view === "month" &&
-                    date.toDateString() === new Date().toDateString()
-                  ) {
-                    return "bg-blue-500 text-white font-bold"; // Custom blue for the current date
-                  }
-                }}
+                tileClassName={({ date, view }) =>
+                  view === "month" &&
+                  date.toDateString() === new Date().toDateString()
+                    ? "bg-blue-500 text-white font-bold"
+                    : ""
+                }
                 prev2Label={null}
                 next2Label={null}
               />
@@ -129,29 +113,25 @@ export default function Footer() {
         </div>
       </footer>
 
-      {/* Floating Donation Bubble */}
       <Link
         to="/donation"
         className="fixed bottom-16 right-6 bg-[#edbf6d] text-[#00032e] hover:bg-[#d9a856] p-5 rounded-full shadow-xl transition duration-300 flex items-center justify-center"
-        style={{ width: "90px", height: "90px" }} // Adjust bubble size
-        onMouseEnter={() => setIsHovered(false)} // Set to true when mouse enters
-        onMouseLeave={() => setIsHovered(true)} // Set to false when mouse leaves
+        style={{ width: "90px", height: "90px" }}
+        onMouseEnter={() => setIsHovered(false)}
+        onMouseLeave={() => setIsHovered(true)}
       >
         <lord-icon
           src="https://cdn.lordicon.com/bdnahcds.json"
-          trigger={isHovered ? "loop" : "hover"} // Loop animation when hovered, stop when not
-          style={{ width: "55px", height: "55px" }} // Adjust icon size
+          trigger={isHovered ? "loop" : "hover"}
+          style={{ width: "55px", height: "55px" }}
         ></lord-icon>
       </Link>
 
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-16 right-6 bg-white bg-opacity-75 text-black p-3 rounded-full shadow-xl transition-all duration-500 ease-in-out flex items-center justify-center ${
-          showScrollTop
-            ? "opacity-100 transform translate-y-0"
-            : "opacity-0 transform translate-y-10 pointer-events-none"
-        }`}
+        className={`fixed right-6 bg-white bg-opacity-75 text-black p-3 rounded-full shadow-xl transition-all duration-500 ease-in-out flex items-center justify-center 
+    ${showScrollTop ? "top-[85vh]" : "top-0 opacity-0 pointer-events-none"}`}
         aria-label="Scroll to top"
       >
         <svg
@@ -170,7 +150,6 @@ export default function Footer() {
         </svg>
       </button>
 
-      {/* Copyright */}
       <div className="absolute bottom-0 left-0 p-4 text-white text-xs text-center w-full bg-black bg-opacity-70">
         © {new Date().getFullYear()} Your Company. All rights reserved.
       </div>
