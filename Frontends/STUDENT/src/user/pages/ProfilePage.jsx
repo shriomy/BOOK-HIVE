@@ -64,7 +64,7 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#3E2723] to-[#000000] z-20">
+      <div className="absolute inset-0 flex items-center justify-center z-20">
         <DotLottieReact
           src="https://lottie.host/e01dd401-545e-4152-ad07-1846b8e1ea3d/bgf5mRGQ23.lottie"
           loop

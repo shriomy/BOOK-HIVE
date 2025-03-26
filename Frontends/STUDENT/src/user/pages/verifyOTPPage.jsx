@@ -74,7 +74,7 @@ export default function VerifyOTPPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#3E2723] 70% to-[#000000] 30% h-screen overflow-hidden relative">
+    <div className="min-h-screen flex items-center justify-center h-screen overflow-hidden relative">
       <div className="z-10 relative p-10 bg-[#362927] bg-opacity-70 backdrop-blur-md rounded-2xl shadow-xl max-w-lg mx-auto">
         <h1 className="text-4xl text-center text-white font-bold">
           Verify OTP

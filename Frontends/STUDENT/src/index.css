@@ -60,7 +60,7 @@ body {
 }
 
 body {
-  background: linear-gradient(to bottom right, #3e2723 70%, #000000 30%);
+  background: white;
   height: 100vh;
   margin: 0;
 }

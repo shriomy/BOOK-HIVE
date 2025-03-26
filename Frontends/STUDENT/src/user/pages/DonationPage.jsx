@@ -99,7 +99,7 @@ export default function DonationPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#3E2723] 70% to-[#000000] 30% h-screen overflow-hidden relative">
+    <div className="min-h-screen flex items-center justify-center h-screen overflow-hidden relative">
       <video
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
         autoPlay

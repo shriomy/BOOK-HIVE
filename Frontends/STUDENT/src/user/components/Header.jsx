@@ -45,7 +45,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="w-full bg-black bg-opacity-60 shadow-lg">
+      <div className="w-full bg-black bg-opacity-90 shadow-lg">
         {/* Main Navbar */}
         <div className="flex justify-between items-center py-4 px-6 border-b">
           {/* Logo and Information */}

@@ -38,7 +38,7 @@ export default function Footer() {
 
   return (
     <div className="relative">
-      <footer className="p-8 bg-black bg-opacity-70 backdrop-blur-md shadow-xl text-white">
+      <footer className="p-8 bg-black bg-opacity-90 backdrop-blur-md shadow-xl text-white">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
           <div className="text-3xl font-extrabold text-center md:text-left">
             <span className="text-[#edbf6d]">Your Company</span>
@@ -130,7 +130,7 @@ export default function Footer() {
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`fixed right-6 bg-white bg-opacity-75 text-black p-3 rounded-full shadow-xl transition-all duration-500 ease-in-out flex items-center justify-center 
+        className={`fixed right-6 bg-orange-700 bg-opacity-90 text-white p-3 rounded-full shadow-xl transition-all duration-500 ease-in-out flex items-center justify-center 
     ${showScrollTop ? "top-[85vh]" : "top-0 opacity-0 pointer-events-none"}`}
         aria-label="Scroll to top"
       >

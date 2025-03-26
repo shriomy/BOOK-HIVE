@@ -7,7 +7,7 @@ import "../../index.css";
 
 export default function FeedbackPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#2c1f19] via-[#3e2723] to-[#000000] 30% h-screen overflow-hidden relative text-white">
+    <div className="min-h-screen flex items-center justify-center h-screen overflow-hidden relative">
       feedback page
     </div>
   );

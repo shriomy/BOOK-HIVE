@@ -84,7 +84,7 @@ const DonationSinglePage = () => {
     return <div className="text-center text-red-500 text-lg">{error}</div>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2c1f19] via-[#3e2723] to-[#000000] text-white flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen text-white flex items-center justify-center py-12 px-4">
       {/* Custom Alert for confirmations and notifications */}
       {alertConfig.onConfirm ? (
         // Confirmation alert with buttons

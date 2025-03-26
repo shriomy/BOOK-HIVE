@@ -112,7 +112,7 @@ const BookDetailsPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#2c1f19] via-[#3e2723] to-[#000000] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-[#edbf6d] text-xl">Loading book details...</div>
       </div>
     );

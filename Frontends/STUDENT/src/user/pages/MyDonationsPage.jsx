@@ -22,7 +22,7 @@ const MyDonationsPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2c1f19] via-[#3e2723] to-[#000000] text-white py-12">
+    <div className="min-h-screen py-12">
       <div className="max-w-6xl mx-auto px-6">
         {/* Banner Image */}
         <div className="relative w-full mb-8">
