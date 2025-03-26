@@ -8,7 +8,7 @@ export default function Layout() {
   const hideHeaderPaths = ["/register", "/login", "/landing"]; // Hide header for these paths
 
   return (
-    <div className="flex flex-col min-h-screen relative bg-gradient-to-br from-[#2c1f19] via-[#3e2723] to-[#000000]">
+    <div className="flex flex-col min-h-screen relative">
       {!hideHeaderPaths.includes(location.pathname) && <Header />}
 
       <main className="flex-grow flex flex-col">
