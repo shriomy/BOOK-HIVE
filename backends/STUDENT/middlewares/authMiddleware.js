@@ -80,9 +80,43 @@ const deleteauth = async (req, res, next) => {
   }
 };
 
+const authMiddlewareborrowed = (req, res, next) => {
+  // Check both cookie and Authorization header
+  const token =
+    req.cookies.token ||
+    (req.headers.authorization && req.headers.authorization.split(" ")[1]);
+
+  if (!token) {
+    return res.status(401).json({
+      message: "Unauthorized: No token provided",
+      details: "Please log in to access this resource",
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      return res.status(401).json({
+        message: "Token expired",
+        details: "Please log in again",
+      });
+    }
+    return res.status(401).json({
+      message: "Invalid token",
+      details: "Authentication failed",
+    });
+  }
+};
+
+module.exports = { authMiddleware };
+
 module.exports = {
   authMiddleware,
   authenticateUser,
   donationverify,
   deleteauth,
+  authMiddlewareborrowed,
 };
