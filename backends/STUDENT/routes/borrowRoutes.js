@@ -20,17 +20,27 @@ router.post("/api/books/:id/borrow", async (req, res) => {
       return res.status(400).json({ message: "No copies available to borrow" });
     }
 
-    // Check if user already has a pending or borrowed status for this book
-    const existingBorrowing = book.borrowings.find(
+    // Check if user already has an active borrowing for this book
+    const existingActiveBorrowing = book.borrowings.find(
       (b) =>
         b.userId.toString() === userId &&
         ["pending", "borrowed"].includes(b.status)
     );
 
-    if (existingBorrowing) {
-      return res.status(400).json({
-        message: `You already have this book ${existingBorrowing.status}`,
-      });
+    // Allow borrowing if:
+    // 1. No existing active borrowing, OR
+    // 2. Previous borrowing was returned/received
+    if (existingActiveBorrowing) {
+      // If the user has a previous "returned" or "received" status, allow a new borrow
+      const lastBorrowing = book.borrowings
+        .filter((b) => b.userId.toString() === userId)
+        .sort((a, b) => b.borrowDate - a.borrowDate)[0];
+
+      if (!["returned", "received"].includes(lastBorrowing.status)) {
+        return res.status(400).json({
+          message: `You already have this book ${lastBorrowing.status}`,
+        });
+      }
     }
 
     // Create new borrowing record
@@ -47,11 +57,7 @@ router.post("/api/books/:id/borrow", async (req, res) => {
     book.bookCount -= 1;
 
     // Update book's overall availability status based on remaining copies
-    if (book.bookCount <= 0) {
-      book.currentStatus = "unavailable";
-    } else {
-      book.currentStatus = "available";
-    }
+    book.currentStatus = book.bookCount <= 0 ? "unavailable" : "available";
 
     await book.save();
 
