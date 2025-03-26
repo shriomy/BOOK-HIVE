@@ -154,3 +154,60 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.uploadProfilePicture = async (req, res) => {
+  try {
+    const { file } = req;
+
+    if (!file) {
+      return res.status(400).json({ message: "No file uploaded." });
+    }
+
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update user's profile picture
+    user.profilePicture = {
+      data: file.buffer,
+      contentType: file.mimetype,
+    };
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Profile picture uploaded successfully",
+      profilePicture: {
+        contentType: user.profilePicture.contentType,
+      },
+    });
+  } catch (error) {
+    console.error("Profile picture upload error:", error);
+    res.status(500).json({
+      message: "Failed to upload profile picture",
+      error: error.message,
+    });
+  }
+};
+
+// Add a method to get profile picture
+exports.getProfilePicture = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user || !user.profilePicture || !user.profilePicture.data) {
+      return res.status(404).json({ message: "No profile picture found" });
+    }
+
+    res.contentType(user.profilePicture.contentType);
+    res.send(user.profilePicture.data);
+  } catch (error) {
+    console.error("Get profile picture error:", error);
+    res.status(500).json({
+      message: "Failed to retrieve profile picture",
+      error: error.message,
+    });
+  }
+};
