@@ -17,6 +17,7 @@ import BooksPage from "../user/pages/BooksPage";
 import BookDetailsPage from "../user/pages/BookDetailsPage";
 import MyTicketsPage from "../user/pages/MyTicketsPage";
 import TicketSinglePage from "../user/pages/TicketSinglePage";
+import BorrowedBooks from "../user/pages/BorrowedBooksPage";
 
 const pageVariants = {
   initial: { opacity: 0, x: 100 },
@@ -236,6 +237,19 @@ const UserRoutes = () => {
                 exit="exit"
               >
                 <TicketSinglePage />
+              </motion.div>
+            }
+          />
+          <Route
+            path="books/borrowed"
+            element={
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <BorrowedBooks />
               </motion.div>
             }
           />
