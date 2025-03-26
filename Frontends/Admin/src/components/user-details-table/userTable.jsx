@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./userTable.scss";
-import Profile from "../../assets/images/profile.png";
+import DefaultAvatar from "../../assets/images/profile.png"; // Default avatar image
 import {
   Box,
   Typography,
@@ -37,29 +37,34 @@ const UserTable = () => {
     fetchUsers();
   }, []);
 
-  // Function to fetch the ID card image and open the modal
+  // Function to render profile picture or avatar
+  const renderProfilePicture = (user) => {
+    if (user.profilePicture) {
+      return `http://localhost:3000/user/${user._id}/profile-picture`;
+    }
+    return DefaultAvatar;
+  };
+
+  // Existing methods remain the same...
   const handleViewIdCard = async (userId) => {
     setOpenModal(true);
-    console.log("View ID Card clicked for user:", userId); // Debugging
+    console.log("View ID Card clicked for user:", userId);
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/user/${userId}/idcard`, // API endpoint for ID card
+        `http://localhost:3000/user/${userId}/idcard`,
         {
-          responseType: "arraybuffer", // Important for binary image data
+          responseType: "arraybuffer",
         }
       );
 
-      // Convert the binary data to base64 string
       const base64Image = arrayBufferToBase64(response.data);
-
-      setIdCardImage(base64Image); // Set the image data for rendering
+      setIdCardImage(base64Image);
     } catch (error) {
       console.error("Error fetching ID card:", error);
     }
   };
 
-  // Convert ArrayBuffer to Base64
   const arrayBufferToBase64 = (buffer) => {
     let binary = "";
     const bytes = new Uint8Array(buffer);
@@ -67,16 +72,14 @@ const UserTable = () => {
     for (let i = 0; i < length; i++) {
       binary += String.fromCharCode(bytes[i]);
     }
-    return window.btoa(binary); // Convert binary string to base64
+    return window.btoa(binary);
   };
 
-  // Close modal
   const handleCloseModal = () => {
     setOpenModal(false);
-    setIdCardImage(null); // Clear the image data
+    setIdCardImage(null);
   };
 
-  // Function to delete a user
   const openDeleteConfirm = (userId) => {
     setUserToDelete(userId);
     setDeleteConfirmOpen(true);
@@ -88,10 +91,7 @@ const UserTable = () => {
         withCredentials: true,
       });
 
-      // Update the users state after successful deletion
       setUsers(users.filter((user) => user._id !== userToDelete));
-
-      // Close the dialog
       setDeleteConfirmOpen(false);
       setUserToDelete(null);
     } catch (error) {
@@ -126,8 +126,19 @@ const UserTable = () => {
                 className={index % 2 === 0 ? "even-row" : "odd-row"}
               >
                 <td>
-                  <Box className="name-cont">
-                    <img src={Profile} alt="profile" className="profile-img" />
+                  <Box className="name-cont" display="flex" alignItems="center">
+                    <img
+                      src={renderProfilePicture(user)}
+                      alt={`${user.name}'s profile`}
+                      className="profile-img"
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "50%",
+                        marginRight: "10px",
+                        objectFit: "cover",
+                      }}
+                    />
                     <Box>
                       <Typography className="name-profile">
                         {user.name}
@@ -138,6 +149,7 @@ const UserTable = () => {
                     </Box>
                   </Box>
                 </td>
+                {/* Rest of the table row remains the same */}
                 <td>
                   <Typography className="date-field">
                     {new Date(user.createdAt).toDateString()}
@@ -154,8 +166,7 @@ const UserTable = () => {
                 <td>
                   <Typography className="date-field">
                     {user.idnumber}
-                  </Typography>{" "}
-                  {/* Displaying ID number */}
+                  </Typography>
                 </td>
                 <td>
                   <Typography
@@ -179,7 +190,7 @@ const UserTable = () => {
         </table>
       </div>
 
-      {/* Modal for showing ID card */}
+      {/* Existing Modal components remain the same */}
       <Dialog
         open={openModal}
         onClose={handleCloseModal}
@@ -191,7 +202,7 @@ const UserTable = () => {
           <Box display="flex" justifyContent="center">
             {idCardImage ? (
               <img
-                src={`data:image/png;base64,${idCardImage}`} // Ensure the image source is correctly formatted
+                src={`data:image/png;base64,${idCardImage}`}
                 alt="ID Card"
                 style={{ maxWidth: "100%", maxHeight: "500px" }}
               />

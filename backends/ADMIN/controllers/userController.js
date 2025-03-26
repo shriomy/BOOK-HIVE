@@ -49,3 +49,27 @@ exports.deleteUser = async (req, res) => {
       .json({ message: "Error deleting user", error: error.message });
   }
 };
+exports.getUserProfilePicture = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // If no profile picture exists
+    if (!user.profilePicture || !user.profilePicture.data) {
+      return res.status(404).json({ message: "No profile picture found" });
+    }
+
+    // Set content type and send image data
+    res.contentType(user.profilePicture.contentType);
+    res.send(user.profilePicture.data);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Error fetching profile picture",
+        error: error.message,
+      });
+  }
+};

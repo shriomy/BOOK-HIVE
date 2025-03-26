@@ -9,4 +9,6 @@ router.get("/user/:id/idcard", userController.getUserIdCard);
 
 router.delete("/user/:id", userController.deleteUser);
 
+router.get("/user/:id/profile-picture", userController.getUserProfilePicture);
+
 module.exports = router;

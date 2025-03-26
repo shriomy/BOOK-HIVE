@@ -11,10 +11,14 @@ const UserSchema = new Schema(
       data: { type: Buffer, required: true },
       contentType: { type: String, required: true },
     },
+    profilePicture: {
+      data: { type: Buffer },
+      contentType: { type: String },
+    },
     otp: { type: String },
     otpExpiration: { type: Date },
     isVerified: { type: Boolean, default: false },
-    role: { type: String, default: "user", enum: ["user"] }, // Ensures role is always "user"
+    role: { type: String, default: "user", enum: ["user"] },
   },
   {
     timestamps: true,
@@ -25,5 +29,4 @@ const UserSchema = new Schema(
 UserSchema.index({ otpExpiration: 1 }, { expireAfterSeconds: 0 });
 
 const UserModel = mongoose.model("User", UserSchema);
-
 module.exports = UserModel;

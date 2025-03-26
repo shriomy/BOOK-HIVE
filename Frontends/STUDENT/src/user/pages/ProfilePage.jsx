@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { UserContext } from "../../UserContext.jsx";
 import { Navigate, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -11,14 +10,106 @@ export default function ProfilePage() {
   const [redirect, setRedirect] = useState(null);
   const [loading, setLoading] = useState(true);
   const [avatar, setAvatar] = useState(null);
-  const [showPopup, setShowPopup] = useState(false); // State for popup
+  const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
+
+  // Function to fetch profile picture
+  const fetchProfilePicture = async () => {
+    try {
+      const response = await axios.get("/api/auth/profile-picture", {
+        responseType: "blob",
+        headers: {
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      });
+
+      if (response.data.size === 0) {
+        console.log("No profile picture found");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatar(reader.result);
+      };
+      reader.readAsDataURL(response.data);
+    } catch (error) {
+      console.error("Failed to fetch profile picture:", error);
+      if (error.response && error.response.status === 404) {
+        console.log("No profile picture exists");
+      }
+    }
+  };
+
+  // Handle avatar upload
+  async function handleAvatarUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("profilePicture", file);
+
+      try {
+        await axios.post("/api/auth/upload-profile-picture", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          setAvatar(reader.result);
+        };
+        reader.readAsDataURL(file);
+      } catch (error) {
+        console.error("Profile picture upload failed:", error);
+        alert("Failed to upload profile picture");
+      }
+    }
+  }
+
+  // Comprehensive user profile and authentication handling
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setRedirect("/login");
+          setLoading(false);
+          return;
+        }
+
+        const response = await axios.get("/api/auth/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUser(response.data);
+        fetchProfilePicture();
+      } catch (error) {
+        console.error("Failed to fetch user profile:", error);
+        setRedirect("/login");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!user && ready) {
+      fetchUserProfile();
+    } else if (user) {
+      fetchProfilePicture();
+      setLoading(false);
+    }
+  }, [user, ready, setUser]);
 
   async function logout() {
     try {
       await axios.post("/logout");
       setRedirect("/");
       setUser(null);
+      localStorage.removeItem("token");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -33,54 +124,34 @@ export default function ProfilePage() {
         },
       });
       setUser(null);
+      localStorage.removeItem("token");
       setRedirect("/login");
     } catch (error) {
       console.error("Account deletion failed:", error);
       alert("An error occurred while deleting the account.");
     } finally {
       setLoading(false);
-      setShowPopup(false); // Close the popup after action
+      setShowPopup(false);
     }
   }
 
-  function handleAvatarUpload(event) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setAvatar(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  useEffect(() => {
-    if (ready) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-    }
-  }, [ready]);
-
+  // Render loading state
   if (loading) {
     return (
-      <div className="absolute inset-0 flex items-center justify-center z-20">
-        <DotLottieReact
-          src="https://lottie.host/e01dd401-545e-4152-ad07-1846b8e1ea3d/bgf5mRGQ23.lottie"
-          loop
-          autoplay
-          style={{ width: "200px", height: "200px" }}
-        />
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#2c1f19] via-[#3e2723] to-[#000000]">
+        <div className="text-white text-2xl">Loading...</div>
       </div>
     );
   }
 
-  if (ready && !user && !redirect) {
-    return <Navigate to={"/login"} />;
-  }
-
+  // Redirect if no user
   if (redirect) {
     return <Navigate to={redirect} />;
+  }
+
+  // Redirect to login if no user
+  if (!user) {
+    return <Navigate to="/login" />;
   }
 
   function handleItemClick(title) {
@@ -107,20 +178,33 @@ export default function ProfilePage() {
       {/* Left Panel */}
       <div className="w-1/3 bg-black text-white p-10 rounded-2xl flex flex-col items-center justify-center shadow-lg">
         <label className="relative cursor-pointer">
+          <input
+            type="file"
+            className="hidden"
+            onChange={handleAvatarUpload}
+            accept="image/*"
+          />
           {avatar ? (
             <img
               src={avatar}
               alt="Avatar"
               className="w-40 h-40 rounded-full object-cover border-4 border-white shadow-lg"
+              onClick={() =>
+                document.querySelector('input[type="file"]').click()
+              }
             />
           ) : (
-            <FaUserCircle className="w-40 h-40 text-white" />
+            <FaUserCircle
+              className="w-40 h-40 text-white cursor-pointer"
+              onClick={() =>
+                document.querySelector('input[type="file"]').click()
+              }
+            />
           )}
-          <input type="file" className="hidden" onChange={handleAvatarUpload} />
         </label>
 
-        <h2 className="text-2xl font-semibold mt-4">{user.name}</h2>
-        <p className="text-white text-sm">{user.email}</p>
+        <h2 className="text-2xl font-semibold mt-4">{user?.name || "User"}</h2>
+        <p className="text-white text-sm">{user?.email || "No email"}</p>
 
         <p className="text-lg text-center mt-4">
           I am happy to know you that 300+ projects done successfully!
@@ -137,7 +221,7 @@ export default function ProfilePage() {
             Logout
           </button>
           <button
-            onClick={() => setShowPopup(true)} // Open the popup
+            onClick={() => setShowPopup(true)}
             className="bg-gray-700 text-white hover:bg-gray-600 p-2 w-full rounded-2xl"
           >
             Delete Account
