@@ -9,6 +9,7 @@ import { IoIosWifi } from "react-icons/io";
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [isContentVisible, setIsContentVisible] = useState(false);
   const featuresRef = useRef(null);
 
   const slides = [
@@ -20,15 +21,24 @@ const HeroSection = () => {
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
+    setIsContentVisible(false);
+    setTimeout(() => setIsContentVisible(true), 300);
   };
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    setIsContentVisible(false);
+    setTimeout(() => setIsContentVisible(true), 300);
   };
 
   useEffect(() => {
     const slideInterval = setInterval(nextSlide, 5000);
     return () => clearInterval(slideInterval);
+  }, []);
+
+  useEffect(() => {
+    // Initial content visibility
+    setIsContentVisible(true);
   }, []);
 
   useEffect(() => {
@@ -70,7 +80,16 @@ const HeroSection = () => {
 
         {/* Hero Content */}
         <div className="relative z-10 flex flex-col items-start justify-center h-full max-w-4xl mx-auto px-6 pt-20">
-          <div className="space-y-6">
+          <div
+            className={`
+            space-y-6 transform transition-all duration-700 ease-out
+            ${
+              isContentVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+            }
+          `}
+          >
             <div className="inline-block py-2 px-4 bg-orange-500/20 rounded-full">
               <h3 className="text-[#edbf6d] text-sm font-medium uppercase tracking-widest">
                 Welcome to Book-hive

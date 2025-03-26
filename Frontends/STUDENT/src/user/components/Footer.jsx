@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { FaAnglesUp } from "react-icons/fa6";
 
 export default function Footer() {
   const [isHovered, setIsHovered] = useState(true);
@@ -134,20 +135,7 @@ export default function Footer() {
     ${showScrollTop ? "top-[85vh]" : "top-0 opacity-0 pointer-events-none"}`}
         aria-label="Scroll to top"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 10l7-7m0 0l7 7m-7-7v18"
-          />
-        </svg>
+        <FaAnglesUp className="size-8" />
       </button>
 
       <div className="absolute bottom-0 left-0 p-4 text-white text-xs text-center w-full bg-black bg-opacity-70">
