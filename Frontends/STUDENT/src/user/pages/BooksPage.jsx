@@ -24,7 +24,7 @@ const BooksPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#2c1f19] via-[#3e2723] to-[#000000] flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-[#edbf6d] text-xl">Loading books...</div>
       </div>
     );
@@ -35,7 +35,7 @@ const BooksPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2c1f19] via-[#3e2723] to-[#000000] py-12">
+    <div className="min-h-screen bg-white py-12">
       <div className="max-w-7xl mx-auto px-6">
         <h1 className="text-4xl font-extrabold text-center mb-8 text-[#edbf6d]">
           Books List
