@@ -7,6 +7,8 @@ const {
   getProfile,
   logoutUser,
   deleteUser,
+  uploadProfilePicture,
+  getProfilePicture,
 } = require("../controllers/authController");
 const { authMiddleware, deleteauth } = require("../middlewares/authMiddleware");
 
@@ -19,5 +21,12 @@ router.post("/login", loginUser);
 router.get("/profile", authMiddleware, getProfile);
 router.post("/logout", authMiddleware, logoutUser);
 router.delete("/users/:id", deleteauth, deleteUser);
+router.post(
+  "/upload-profile-picture",
+  authMiddleware,
+  upload.single("profilePicture"),
+  uploadProfilePicture
+);
+router.get("/profile-picture", authMiddleware, getProfilePicture);
 
 module.exports = router;
