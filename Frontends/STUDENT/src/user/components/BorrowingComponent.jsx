@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const BorrowingComponent = ({
@@ -13,11 +13,35 @@ const BorrowingComponent = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [localBookCount, setLocalBookCount] = useState(bookCount);
+  const [currentBorrowStatus, setCurrentBorrowStatus] = useState(borrowStatus);
 
   // Update local book count when prop changes
-  React.useEffect(() => {
+  useEffect(() => {
     setLocalBookCount(bookCount);
   }, [bookCount]);
+
+  // Update current borrow status when borrowings change
+  useEffect(() => {
+    // Find the most recent borrowing for the current user
+    if (borrowings && user) {
+      const userBorrowings = borrowings.filter(
+        (b) => b.userId.toString() === user._id.toString()
+      );
+
+      if (userBorrowings.length > 0) {
+        // Sort borrowings by date in descending order
+        const sortedBorrowings = userBorrowings.sort(
+          (a, b) => new Date(b.borrowDate) - new Date(a.borrowDate)
+        );
+
+        // Set status of the most recent borrowing
+        setCurrentBorrowStatus(sortedBorrowings[0].status);
+      } else {
+        // No borrowings found
+        setCurrentBorrowStatus("");
+      }
+    }
+  }, [borrowings, user]);
 
   // Borrow book function
   const handleBorrowBook = async () => {
@@ -55,6 +79,13 @@ const BorrowingComponent = ({
       showAlert("Book borrow request submitted successfully!", "success");
     } catch (error) {
       console.error("Error borrowing book:", error);
+
+      // Specifically handle already borrowed scenario
+      if (error.response?.data?.message?.includes("already borrowed")) {
+        // Manually set the status to borrowed
+        setCurrentBorrowStatus("borrowed");
+      }
+
       showAlert(
         error.response?.data?.message || "Error borrowing book",
         "danger"
@@ -80,7 +111,7 @@ const BorrowingComponent = ({
     if (!user) return "Login to Borrow";
     if (isLoading) return "Processing...";
 
-    switch (borrowStatus) {
+    switch (currentBorrowStatus) {
       case "pending":
         return "Request Pending";
       case "borrowed":
@@ -108,15 +139,15 @@ const BorrowingComponent = ({
     }
 
     // If no copies available and user doesn't have a status with this book
-    if (localBookCount <= 0 && !borrowStatus) {
+    if (localBookCount <= 0) {
       return `bg-gray-500 text-white cursor-not-allowed ${baseStyle}`;
     }
 
-    switch (borrowStatus) {
+    switch (currentBorrowStatus) {
       case "pending":
         return `bg-yellow-500 text-gray-800 ${baseStyle}`;
       case "borrowed":
-        return `bg-blue-500 text-white ${baseStyle}`;
+        return `bg-blue-500 text-white cursor-not-allowed ${baseStyle}`;
       case "returned":
         return `bg-green-400 text-gray-800 ${baseStyle}`;
       case "received":
@@ -124,6 +155,22 @@ const BorrowingComponent = ({
       default:
         return `bg-[#edbf6d] text-[#00032e] hover:bg-[#d9a856] ${baseStyle}`;
     }
+  };
+
+  // Determine if button should be disabled
+  const isButtonDisabled = () => {
+    if (isLoading) return true;
+    if (localBookCount <= 0) return true;
+
+    // If user has a recent borrowing that's not returned/received
+    if (
+      currentBorrowStatus &&
+      !["returned", "received", ""].includes(currentBorrowStatus)
+    ) {
+      return true;
+    }
+
+    return false;
   };
 
   return (
@@ -139,23 +186,24 @@ const BorrowingComponent = ({
       </p>
 
       {/* User's Personal Borrowing Status - only shown if they have a status */}
-      {borrowStatus && (
+      {currentBorrowStatus && (
         <p className="text-lg mb-4">
           <strong className="text-[#edbf6d]">Your Request:</strong>{" "}
           <span
             className={
-              borrowStatus === "pending"
+              currentBorrowStatus === "pending"
                 ? "text-yellow-400"
-                : borrowStatus === "borrowed"
+                : currentBorrowStatus === "borrowed"
                 ? "text-blue-400"
-                : borrowStatus === "returned"
+                : currentBorrowStatus === "returned"
                 ? "text-green-400"
-                : borrowStatus === "received"
+                : currentBorrowStatus === "received"
                 ? "text-green-600"
                 : ""
             }
           >
-            {borrowStatus.charAt(0).toUpperCase() + borrowStatus.slice(1)}
+            {currentBorrowStatus.charAt(0).toUpperCase() +
+              currentBorrowStatus.slice(1)}
           </span>
         </p>
       )}
@@ -163,7 +211,7 @@ const BorrowingComponent = ({
       <div className="flex justify-center">
         <button
           onClick={handleBorrowBook}
-          disabled={borrowStatus !== "" || localBookCount <= 0 || isLoading}
+          disabled={isButtonDisabled()}
           className={getBorrowButtonStyle()}
         >
           {getBorrowButtonText()}
