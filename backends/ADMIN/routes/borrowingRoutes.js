@@ -83,12 +83,18 @@ router.patch("/:id", async (req, res) => {
       book.borrowings[borrowingIndex].returnDate = returnDate;
     }
 
+    // If the status is changed to "returned", increment the book count
+    if (status === "returned") {
+      book.bookCount += 1;
+    }
+
     // Save the updated book
     await book.save();
 
     res.json({
       message: "Borrowing status updated successfully",
       borrowing: book.borrowings[borrowingIndex],
+      bookCount: book.bookCount,
     });
   } catch (error) {
     console.error("Error updating borrowing status:", error);
