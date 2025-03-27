@@ -18,6 +18,25 @@ exports.registerUser = async (req, res) => {
     const otpExpiration = new Date(Date.now() + 10 * 60 * 1000);
 
     const hashedPassword = bcrypt.hashSync(password, 10);
+
+    // Dynamically set role based on ID number prefix
+    let role = "user";
+    if (idnumber.startsWith("LEC")) {
+      role = "teacher";
+    } else if (idnumber.startsWith("IT")) {
+      role = "it-student";
+    } else if (idnumber.startsWith("ENG")) {
+      role = "engineering-student";
+    } else if (idnumber.startsWith("SA")) {
+      role = "architecture-student";
+    } else if (idnumber.startsWith("LAW")) {
+      role = "law-student";
+    } else if (idnumber.startsWith("BIZ")) {
+      role = "business-student";
+    } else if (idnumber.startsWith("HS")) {
+      role = "humanities-student";
+    }
+
     const userDoc = await User.create({
       name,
       email,
@@ -27,6 +46,7 @@ exports.registerUser = async (req, res) => {
       otp,
       otpExpiration,
       isVerified: false,
+      role,
     });
 
     await sendVerificationEmail(email, otp);
