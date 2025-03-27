@@ -121,7 +121,7 @@ export default function Footer() {
 
       {/* Top Left Bubble */}
       <Link
-        to="/faq"
+        to="/teachers"
         className={`fixed bottom-[calc(16px+110px)] left-6 bg-[#6ddaed] text-[#00032e] hover:bg-[#56c2d9] p-5 rounded-full shadow-xl transition duration-300 flex items-center justify-center 
         ${isTopLeftBubbleHovered ? "z-40" : "z-50"}`}
         style={{ width: "70px", height: "70px" }}
