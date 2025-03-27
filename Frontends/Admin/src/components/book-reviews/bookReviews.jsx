@@ -110,7 +110,7 @@ const BookReviews = () => {
   return (
     <Box sx={{ p: 2 }}>
       <Box className="books-head" sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: "bold", color: "#1565c0" }}>
+        <Typography variant="h5" sx={{ fontWeight: "bold",  }}>
           All Book Reviews
         </Typography>
       </Box>
@@ -131,7 +131,7 @@ const BookReviews = () => {
             ),
           }}
         />
-        <FormControl size="small" sx={{ minWidth: "150px" }}>
+        <FormControl size="small"  sx={{ minWidth: "150px" }}>
           <InputLabel>Filter by</InputLabel>
           <Select
             value={filterOption}
