@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-
 const UserSchema = new Schema(
   {
     name: { type: String, required: true },
@@ -18,15 +17,26 @@ const UserSchema = new Schema(
     otp: { type: String },
     otpExpiration: { type: Date },
     isVerified: { type: Boolean, default: false },
-    role: { type: String, default: "user", enum: ["user"] },
+    role: {
+      type: String,
+      default: "user",
+      enum: [
+        "user",
+        "teacher",
+        "it-student",
+        "engineering-student",
+        "architecture-student",
+        "law-student",
+        "business-student",
+        "humanities-student",
+      ],
+    },
   },
   {
     timestamps: true,
   }
 );
-
 // Create a TTL index on otpExpiration field
 UserSchema.index({ otpExpiration: 1 }, { expireAfterSeconds: 0 });
-
 const UserModel = mongoose.model("User", UserSchema);
 module.exports = UserModel;
