@@ -65,11 +65,9 @@ exports.getUserProfilePicture = async (req, res) => {
     res.contentType(user.profilePicture.contentType);
     res.send(user.profilePicture.data);
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Error fetching profile picture",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error fetching profile picture",
+      error: error.message,
+    });
   }
 };
