@@ -369,16 +369,16 @@ const BorrowBookTable = () => {
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-50 border-b">
+        <table className="w-full ">
+          <thead className="bg-[#efe5e3] text-[#3e2723] text-left">
             <tr>
-              <th className="py-4 px-6 text-left text-sm font-medium text-gray-600">
+              <th className="py-4 px-6 text-left  text-gray-600">
                 Book
               </th>
-              <th className="py-4 px-6 text-left text-sm font-medium text-gray-600">
+              <th className="py-4 px-6 text-left  text-gray-600">
                 User Requested
               </th>
-              <th className="py-4 px-6 text-left text-sm font-medium text-gray-600">
+              <th className="py-4 px-6 text-left  text-gray-600">
                 <div
                   className="flex items-center cursor-pointer"
                   onClick={() => handleSort("status")}
@@ -392,7 +392,7 @@ const BorrowBookTable = () => {
                     ))}
                 </div>
               </th>
-              <th className="py-4 px-6 text-left text-sm font-medium text-gray-600">
+              <th className="py-4 px-6 text-left  text-gray-600">
                 <div
                   className="flex items-center cursor-pointer"
                   onClick={() => handleSort("borrowedDate")}
@@ -406,7 +406,7 @@ const BorrowBookTable = () => {
                     ))}
                 </div>
               </th>
-              <th className="py-4 px-6 text-left text-sm font-medium text-gray-600">
+              <th className="py-4 px-6 text-left  text-gray-600">
                 <div
                   className="flex items-center cursor-pointer"
                   onClick={() => handleSort("returnDate")}
@@ -420,7 +420,7 @@ const BorrowBookTable = () => {
                     ))}
                 </div>
               </th>
-              <th className="py-4 px-6 text-left text-sm font-medium text-gray-600">
+              <th className="py-4 px-6 text-left  text-gray-600">
                 <div
                   className="flex items-center cursor-pointer"
                   onClick={() => handleSort("dueDate")}
@@ -434,12 +434,12 @@ const BorrowBookTable = () => {
                     ))}
                 </div>
               </th>
-              <th className="py-4 px-6 text-left text-sm font-medium text-gray-600">
+              <th className="py-4 px-6 text-left  text-gray-600">
                 Receipt
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200 ">
             {filteredBorrowings.length === 0 ? (
               <tr>
                 <td colSpan="7" className="text-center py-8 text-gray-500">
@@ -450,7 +450,7 @@ const BorrowBookTable = () => {
               </tr>
             ) : (
               filteredBorrowings.map((borrowing) => (
-                <tr key={borrowing.id} className="hover:bg-gray-50">
+                <tr key={borrowing.id} className=" hover:bg-[#f9f5f4]">
                   <td className="py-4 px-6">
                     <div className="flex items-center">
                       <img
