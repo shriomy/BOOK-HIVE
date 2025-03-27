@@ -160,7 +160,7 @@ export default function ProfilePage() {
         navigate("/account/donations");
         break;
       case "Your Books":
-        navigate("/books");
+        navigate("/books/borrowed");
         break;
       case "Software":
         navigate("/software");
