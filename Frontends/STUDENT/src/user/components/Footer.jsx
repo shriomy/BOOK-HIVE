@@ -121,8 +121,8 @@ export default function Footer() {
 
       {/* Top Left Bubble */}
       <Link
-        to="/faq"
-        className={`fixed bottom-[calc(16px+110px)] left-6 bg-[#6ddaed] text-[#00032e] hover:bg-[#56c2d9] p-5 rounded-full shadow-xl transition duration-300 flex items-center justify-center 
+        to="/teachers"
+        className={`fixed bottom-16 left-6 bg-[#6ddaed] text-[#00032e] hover:bg-[#56c2d9] p-5 rounded-full shadow-xl transition duration-300 flex items-center justify-center 
         ${isTopLeftBubbleHovered ? "z-40" : "z-50"}`}
         style={{ width: "70px", height: "70px" }}
         onMouseEnter={() => setIsTopLeftBubbleHovered(false)}
@@ -131,23 +131,11 @@ export default function Footer() {
         <IoChatboxEllipses className="size-8" />
       </Link>
 
-      {/* Bottom Left Bubble */}
-      <Link
-        to="/contact"
-        className={`fixed bottom-16 left-6 bg-[#ed6d6d] text-[#00032e] hover:bg-[#d95656] p-5 rounded-full shadow-xl transition duration-300 flex items-center justify-center 
-        ${isBottomLeftBubbleHovered ? "z-40" : "z-50"}`}
-        style={{ width: "70px", height: "70px" }}
-        onMouseEnter={() => setIsBottomLeftBubbleHovered(false)}
-        onMouseLeave={() => setIsBottomLeftBubbleHovered(true)}
-      >
-        <IoIosNotifications className="size-8" />
-      </Link>
-
       {/* Donation Bubble (Right Side) */}
       <Link
         to="/donation"
         className={`fixed bottom-16 right-6 bg-[#edbf6d] text-[#00032e] hover:bg-[#d9a856] p-5 rounded-full shadow-xl transition duration-300 flex items-center justify-center 
-        ${isDonationHovered ? "z-40" : "z-50"}`}
+        ${isDonationHovered ? "z-20" : "z-20"}`}
         style={{ width: "90px", height: "90px" }}
         onMouseEnter={() => setIsDonationHovered(false)}
         onMouseLeave={() => setIsDonationHovered(true)}
@@ -162,7 +150,7 @@ export default function Footer() {
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`fixed right-6 bg-orange-700 bg-opacity-90 text-white p-3 rounded-full shadow-xl transition-all duration-500 ease-in-out flex items-center justify-center 
+        className={`z-30 fixed right-6 bg-orange-700 bg-opacity-90 text-white p-3 rounded-full shadow-xl transition-all duration-500 ease-in-out flex items-center justify-center 
     ${showScrollTop ? "top-[85vh]" : "top-0 opacity-0 pointer-events-none"}`}
         aria-label="Scroll to top"
       >

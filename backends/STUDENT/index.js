@@ -22,6 +22,7 @@ const questionRoutes = require("./routes/questionRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const borrowRoutes = require("./routes/borrowRoutes");
 const borrowedRoutes = require("./routes/borrowedRoutes");
+const teacherRoutes = require("./routes/teacherRoutes");
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 require("dotenv").config();
@@ -69,6 +70,9 @@ app.use("/api/contacts", contactRoutes);
 
 app.use(borrowRoutes);
 app.use("/api/borrowings", borrowedRoutes);
+
+app.use("/api", teacherRoutes);
+
 // API route for an admin to verify a donation
 /*app.patch("/donations/:id/verify", authenticateUser, async (req, res) => {
   try {

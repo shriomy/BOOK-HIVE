@@ -8,9 +8,10 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [idnumber, setidnumber] = useState("");
+  const [faculty, setFaculty] = useState(""); // New state for faculty
   const [idcard, setidcard] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [idcardPreview, setIdcardPreview] = useState(null); // State for image preview
+  const [idcardPreview, setIdcardPreview] = useState(null);
 
   // New alert states
   const [showAlert, setShowAlert] = useState(false);
@@ -19,8 +20,26 @@ export default function RegisterPage() {
 
   const navigate = useNavigate();
 
+  // Faculty options
+  const facultyOptions = [
+    "Faculty of Computing",
+    "Engineering Faculty",
+    "Faculty of Humanities and Sciences",
+    "Business Faculty",
+    "Law Faculty",
+    "School of Architecture",
+  ];
+
   async function registerUser(ev) {
     ev.preventDefault();
+
+    // Additional validation for faculty
+    if (!faculty) {
+      setAlertMessage("Please select your faculty.");
+      setAlertVariant("warning");
+      setShowAlert(true);
+      return;
+    }
 
     if (!idcard) {
       setAlertMessage("Please upload your ID card.");
@@ -34,6 +53,7 @@ export default function RegisterPage() {
     formData.append("email", email);
     formData.append("password", password);
     formData.append("idnumber", idnumber);
+    formData.append("faculty", faculty); // Add faculty to form data
     formData.append("idcard", idcard);
 
     try {
@@ -137,6 +157,20 @@ export default function RegisterPage() {
                   onChange={(ev) => setidnumber(ev.target.value)}
                   className="w-full p-3 rounded-xl bg-[#4a3936] text-white placeholder-gray-300 focus:ring-2 focus:ring-[#edbf6d] focus:outline-none"
                 />
+
+                {/* New Faculty Dropdown */}
+                <select
+                  value={faculty}
+                  onChange={(ev) => setFaculty(ev.target.value)}
+                  className="w-full p-3 rounded-xl bg-[#4a3936] text-white placeholder-gray-300 focus:ring-2 focus:ring-[#edbf6d] focus:outline-none"
+                >
+                  <option value="">Select Your Faculty</option>
+                  {facultyOptions.map((fac) => (
+                    <option key={fac} value={fac} className="bg-[#4a3936]">
+                      {fac}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="relative">
@@ -199,7 +233,7 @@ export default function RegisterPage() {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={handleFileChange} // Update file handler
+                    onChange={handleFileChange}
                     className="hidden"
                     id="fileInput"
                   />

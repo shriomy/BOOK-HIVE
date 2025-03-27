@@ -113,6 +113,7 @@ const UserTable = () => {
               <th className="table-name">Name</th>
               <th>Date Joined</th>
               <th>Role</th>
+              <th>Faculty</th>
               <th>Books Borrowed</th>
               <th>University ID</th>
               <th>University ID Card</th>
@@ -149,7 +150,6 @@ const UserTable = () => {
                     </Box>
                   </Box>
                 </td>
-                {/* Rest of the table row remains the same */}
                 <td>
                   <Typography className="date-field">
                     {new Date(user.createdAt).toDateString()}
@@ -157,6 +157,11 @@ const UserTable = () => {
                 </td>
                 <td>
                   <Typography className="role-field">{user.role}</Typography>
+                </td>
+                <td>
+                  <Typography className="faculty-field">
+                    {user.faculty}
+                  </Typography>
                 </td>
                 <td>
                   <Typography className="date-field">

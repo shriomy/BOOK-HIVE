@@ -5,8 +5,9 @@ const User = require("../models/User");
 const { sendVerificationEmail } = require("../services/emailService");
 const { sendWelcomeEmail } = require("../services/welcomeMessageService");
 
+// Updated registration controller
 exports.registerUser = async (req, res) => {
-  const { name, email, password, idnumber } = req.body;
+  const { name, email, password, idnumber, faculty } = req.body;
   const { file } = req;
 
   if (!file) {
@@ -16,7 +17,6 @@ exports.registerUser = async (req, res) => {
   try {
     const otp = crypto.randomInt(100000, 999999).toString();
     const otpExpiration = new Date(Date.now() + 10 * 60 * 1000);
-
     const hashedPassword = bcrypt.hashSync(password, 10);
 
     // Dynamically set role based on ID number prefix
@@ -41,6 +41,7 @@ exports.registerUser = async (req, res) => {
       name,
       email,
       idnumber,
+      faculty, // Add faculty to the user creation
       password: hashedPassword,
       idcard: { data: file.buffer, contentType: file.mimetype },
       otp,
