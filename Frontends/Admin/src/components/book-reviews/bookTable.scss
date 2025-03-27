@@ -24,8 +24,8 @@
   }
   
   th {
-    background-color: #f7f9fc;
-    color: #1565c0;
+    background-color: #efe5e3;
+    color: #3e2723;
     font-weight: 600;
     position: sticky;
     top: 0;
@@ -34,7 +34,7 @@
   
   tbody tr {
     &:hover {
-      background-color: #f5f9ff;
+      background-color: #f9f5f4;
     }
   }
   
@@ -47,7 +47,7 @@
     
     .book-title {
       font-weight: 500;
-      color: #1976d2;
+      color: #000000;
     }
   }
 }
