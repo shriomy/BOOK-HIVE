@@ -19,6 +19,8 @@ import {
   MenuItem,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import DownloadIcon from "@mui/icons-material/Download";
+import jsPDF from "jspdf";
 
 const BookReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -60,9 +62,12 @@ const BookReviews = () => {
         review.reviewText.toLowerCase().includes(searchTerm.toLowerCase());
 
       if (filterOption === "all") return matchesSearch;
-      if (filterOption === "positive") return matchesSearch && review.rating >= 4;
-      if (filterOption === "neutral") return matchesSearch && review.rating === 3;
-      if (filterOption === "negative") return matchesSearch && review.rating < 3;
+      if (filterOption === "positive")
+        return matchesSearch && review.rating >= 4;
+      if (filterOption === "neutral")
+        return matchesSearch && review.rating === 3;
+      if (filterOption === "negative")
+        return matchesSearch && review.rating < 3;
       return matchesSearch;
     });
 
@@ -97,6 +102,48 @@ const BookReviews = () => {
     }
   };
 
+  const generatePDF = () => {
+    if (!selectedReview) return;
+
+    // Create new PDF document
+    const doc = new jsPDF();
+
+    // Set font styles
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+
+    // Add title
+    doc.text("Book Review Details", 20, 20);
+
+    // Set normal font for content
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+
+    // Add book details
+    doc.text(`Book Title: ${selectedReview.title}`, 20, 40);
+    doc.text(`Reviewer: ${selectedReview.reviewer}`, 20, 50);
+    doc.text(
+      `Review Date: ${new Date(selectedReview.date).toLocaleDateString()}`,
+      20,
+      60
+    );
+
+    if (selectedReview.rating !== undefined) {
+      doc.text(`Rating: ${selectedReview.rating}/5`, 20, 70);
+    }
+
+    // Add review text with word wrapping
+    doc.setFontSize(14);
+    doc.text("Review:", 20, 90);
+
+    const splitText = doc.splitTextToSize(selectedReview.reviewText, 170);
+    doc.setFontSize(12);
+    doc.text(splitText, 20, 100);
+
+    // Save the PDF
+    doc.save(`${selectedReview.title.replace(/\s+/g, "_")}_review.pdf`);
+  };
+
   const getRatingColor = (rating) => {
     if (!rating) return "default";
     if (rating >= 4) return "success";
@@ -110,7 +157,7 @@ const BookReviews = () => {
   return (
     <Box sx={{ p: 2 }}>
       <Box className="books-head" sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: "bold",  }}>
+        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
           All Book Reviews
         </Typography>
       </Box>
@@ -131,7 +178,7 @@ const BookReviews = () => {
             ),
           }}
         />
-        <FormControl size="small"  sx={{ minWidth: "150px" }}>
+        <FormControl size="small" sx={{ minWidth: "150px" }}>
           <InputLabel>Filter by</InputLabel>
           <Select
             value={filterOption}
@@ -155,7 +202,6 @@ const BookReviews = () => {
               <tr className="tab-hed">
                 <th>Book Name</th>
                 <th>Reviewer</th>
-                <th>Rating</th>
                 <th>Review Date</th>
                 <th>Review</th>
                 <th>Actions</th>
@@ -166,22 +212,6 @@ const BookReviews = () => {
                 <tr key={review.reviewId} className="review-row">
                   <td className="book-title">{review.title}</td>
                   <td>{review.reviewer}</td>
-                  <td>
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <Rating
-                        value={review.rating || 0}
-                        readOnly
-                        size="small"
-                        precision={0.5}
-                      />
-                      <Chip
-                        label={review.rating || "N/A"}
-                        size="small"
-                        color={getRatingColor(review.rating)}
-                        sx={{ ml: 1 }}
-                      />
-                    </Box>
-                  </td>
                   <td>{new Date(review.date).toLocaleDateString()}</td>
                   <td>
                     {review.reviewText.length > 50
@@ -238,16 +268,7 @@ const BookReviews = () => {
               <Typography variant="h6" gutterBottom color="primary">
                 {selectedReview.title}
               </Typography>
-              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                <Rating
-                  value={selectedReview.rating || 0}
-                  readOnly
-                  precision={0.5}
-                />
-                <Typography variant="body2" sx={{ ml: 1, color: "text.secondary" }}>
-                  ({selectedReview.rating || "No rating"})
-                </Typography>
-              </Box>
+
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 3 }}>
                 <Chip
                   label={`Reviewer: ${selectedReview.reviewer}`}
@@ -255,10 +276,19 @@ const BookReviews = () => {
                   size="small"
                 />
                 <Chip
-                  label={`Date: ${new Date(selectedReview.date).toLocaleDateString()}`}
+                  label={`Date: ${new Date(
+                    selectedReview.date
+                  ).toLocaleDateString()}`}
                   variant="outlined"
                   size="small"
                 />
+                {selectedReview.rating !== undefined && (
+                  <Chip
+                    label={`Rating: ${selectedReview.rating}/5`}
+                    color={getRatingColor(selectedReview.rating)}
+                    size="small"
+                  />
+                )}
               </Box>
               <Typography variant="body1" sx={{ mt: 2, fontWeight: "medium" }}>
                 Review:
@@ -281,19 +311,30 @@ const BookReviews = () => {
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
           {selectedReview && (
-            <Button
-              onClick={() =>
-                handleDeleteReview(
-                  selectedReview.bookId,
-                  selectedReview.reviewId
-                )
-              }
-              color="error"
-              variant="outlined"
-              sx={{ borderRadius: "20px" }}
-            >
-              Delete Review
-            </Button>
+            <>
+              <Button
+                onClick={generatePDF}
+                color="primary"
+                variant="outlined"
+                startIcon={<DownloadIcon />}
+                sx={{ borderRadius: "20px", mr: 1 }}
+              >
+                Download PDF
+              </Button>
+              <Button
+                onClick={() =>
+                  handleDeleteReview(
+                    selectedReview.bookId,
+                    selectedReview.reviewId
+                  )
+                }
+                color="error"
+                variant="outlined"
+                sx={{ borderRadius: "20px" }}
+              >
+                Delete Review
+              </Button>
+            </>
           )}
           <Button
             onClick={handleCloseModal}

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import CustomAlert from "../components/CustomAlert"; // Adjust the path as needed
+import { jsPDF } from "jspdf"; // Import jsPDF
 
 const DonationSinglePage = () => {
   const { donationId } = useParams();
@@ -77,6 +78,134 @@ const DonationSinglePage = () => {
       alertConfig.onConfirm();
     }
     handleCloseAlert();
+  };
+
+  // Function to handle PDF download
+  const handleDownloadPDF = () => {
+    if (!donation) return;
+
+    // Create new PDF document
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    // Add title
+    doc.setFontSize(20);
+    doc.setTextColor(62, 33, 11); // Dark brown color
+    doc.text("Donation Details", pageWidth / 2, 20, { align: "center" });
+
+    // Add divider
+    doc.setDrawColor(237, 191, 109); // Gold color
+    doc.setLineWidth(0.5);
+    doc.line(20, 25, pageWidth - 20, 25);
+
+    // Set normal text formatting
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+
+    // Add content with proper spacing
+    let yPos = 35;
+    const lineHeight = 7;
+
+    // Add donation information
+    doc.setFont(undefined, "bold");
+    doc.text("Donation ID:", 20, yPos);
+    doc.setFont(undefined, "normal");
+    doc.text(donationId, 80, yPos);
+    yPos += lineHeight;
+
+    doc.setFont(undefined, "bold");
+    doc.text("Book Title:", 20, yPos);
+    doc.setFont(undefined, "normal");
+    doc.text(donation.bookTitle, 80, yPos);
+    yPos += lineHeight;
+
+    doc.setFont(undefined, "bold");
+    doc.text("Author:", 20, yPos);
+    doc.setFont(undefined, "normal");
+    doc.text(donation.author, 80, yPos);
+    yPos += lineHeight;
+
+    doc.setFont(undefined, "bold");
+    doc.text("Genre:", 20, yPos);
+    doc.setFont(undefined, "normal");
+    doc.text(donation.genre, 80, yPos);
+    yPos += lineHeight;
+
+    doc.setFont(undefined, "bold");
+    doc.text("Condition:", 20, yPos);
+    doc.setFont(undefined, "normal");
+    doc.text(donation.condition, 80, yPos);
+    yPos += lineHeight;
+
+    doc.setFont(undefined, "bold");
+    doc.text("Donor Name:", 20, yPos);
+    doc.setFont(undefined, "normal");
+    doc.text(donation.donorName, 80, yPos);
+    yPos += lineHeight;
+
+    doc.setFont(undefined, "bold");
+    doc.text("Donor Contact:", 20, yPos);
+    doc.setFont(undefined, "normal");
+    doc.text(donation.donorContact, 80, yPos);
+    yPos += lineHeight * 1.5;
+
+    // Message section if available
+    if (donation.message) {
+      doc.setFont(undefined, "bold");
+      doc.text("Message:", 20, yPos);
+      yPos += lineHeight;
+      doc.setFont(undefined, "normal");
+
+      // Split long message text into lines
+      const messageLines = doc.splitTextToSize(
+        donation.message,
+        pageWidth - 40
+      );
+      doc.text(messageLines, 20, yPos);
+      yPos += messageLines.length * lineHeight + 5;
+    }
+
+    // Status section
+    doc.setFont(undefined, "bold");
+    doc.text("Status:", 20, yPos);
+    doc.setFont(undefined, "normal");
+
+    // Status with color
+    if (donation.verified) {
+      doc.setTextColor(0, 128, 0); // Green color for verified
+      doc.text("Verified", 80, yPos);
+    } else {
+      doc.setTextColor(255, 140, 0); // Orange color for unverified
+      doc.text("Unverified", 80, yPos);
+    }
+    yPos += lineHeight * 1.5;
+
+    // Reset text color
+    doc.setTextColor(0, 0, 0);
+
+    // Add footer with divider
+    doc.setDrawColor(237, 191, 109); // Gold color
+    doc.setLineWidth(0.5);
+    doc.line(20, yPos, pageWidth - 20, yPos);
+    yPos += lineHeight;
+
+    // Add download timestamp
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100); // Gray color
+    doc.text(`Downloaded on: ${new Date().toLocaleString()}`, 20, yPos);
+
+    // Save the PDF
+    doc.save(
+      `Donation_${donationId}_${donation.bookTitle.replace(/\s+/g, "_")}.pdf`
+    );
+
+    // Show success message
+    setAlertConfig({
+      show: true,
+      message: "Donation details downloaded as PDF successfully.",
+      variant: "success",
+      onConfirm: null,
+    });
   };
 
   if (loading) return <div className="text-center text-lg">Loading...</div>;
@@ -156,13 +285,21 @@ const DonationSinglePage = () => {
         </div>
 
         {/* Buttons */}
-        <div className="mt-8 flex flex-col items-center space-y-4">
+        <div className="mt-8 flex flex-col sm:flex-row sm:justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <Link
             to="/account/donations"
             className="bg-[#edbf6d] text-[#00032e] hover:bg-[#d9a856] px-6 py-3 rounded-2xl font-bold transition-all duration-300"
           >
             Back to My Donations
           </Link>
+
+          {/* Download PDF button */}
+          <button
+            onClick={handleDownloadPDF}
+            className="bg-green-600 text-white hover:bg-green-700 px-6 py-3 rounded-2xl font-bold transition-all duration-300"
+          >
+            Download PDF
+          </button>
 
           {/* Show Delete button only if the donation is unverified */}
           {!donation.verified && (

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import CustomAlert from "../components/CustomAlert"; // Adjust the path as needed
+import { jsPDF } from "jspdf"; // Import jsPDF
 
 const TicketSinglePage = () => {
   const { contactId } = useParams();
@@ -121,6 +122,116 @@ const TicketSinglePage = () => {
     handleCloseAlert();
   };
 
+  // Function to handle PDF download
+  const handleDownloadPDF = () => {
+    if (!contact) return;
+
+    // Create new PDF document
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    // Add title
+    doc.setFontSize(20);
+    doc.setTextColor(62, 33, 11); // Dark brown color
+    doc.text("Ticket Details", pageWidth / 2, 20, { align: "center" });
+
+    // Add divider
+    doc.setDrawColor(237, 191, 109); // Gold color
+    doc.setLineWidth(0.5);
+    doc.line(20, 25, pageWidth - 20, 25);
+
+    // Set normal text formatting
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+
+    // Add content with proper spacing
+    let yPos = 35;
+    const lineHeight = 7;
+
+    // Add ticket information
+    doc.setFont(undefined, "bold");
+    doc.text("ID:", 20, yPos);
+    doc.setFont(undefined, "normal");
+    doc.text(contactId, 60, yPos);
+    yPos += lineHeight;
+
+    doc.setFont(undefined, "bold");
+    doc.text("Name:", 20, yPos);
+    doc.setFont(undefined, "normal");
+    doc.text(contact.name, 60, yPos);
+    yPos += lineHeight;
+
+    doc.setFont(undefined, "bold");
+    doc.text("IT Number:", 20, yPos);
+    doc.setFont(undefined, "normal");
+    doc.text(contact.itNumber, 60, yPos);
+    yPos += lineHeight;
+
+    doc.setFont(undefined, "bold");
+    doc.text("Faculty:", 20, yPos);
+    doc.setFont(undefined, "normal");
+    doc.text(contact.faculty, 60, yPos);
+    yPos += lineHeight;
+
+    doc.setFont(undefined, "bold");
+    doc.text("Specialisation:", 20, yPos);
+    doc.setFont(undefined, "normal");
+    doc.text(contact.specialisation, 60, yPos);
+    yPos += lineHeight * 1.5;
+
+    // Message section with wrapping
+    doc.setFont(undefined, "bold");
+    doc.text("Your Message:", 20, yPos);
+    yPos += lineHeight;
+    doc.setFont(undefined, "normal");
+
+    // Split long message text into lines
+    const messageLines = doc.splitTextToSize(contact.message, pageWidth - 40);
+    doc.text(messageLines, 20, yPos);
+    yPos += messageLines.length * lineHeight + 5;
+
+    // Admin reply section if available
+    if (contact.reply) {
+      doc.setFont(undefined, "bold");
+      doc.text("Admin Reply:", 20, yPos);
+      yPos += lineHeight;
+      doc.setFont(undefined, "normal");
+
+      // Split long reply text into lines
+      const replyLines = doc.splitTextToSize(contact.reply, pageWidth - 40);
+      doc.text(replyLines, 20, yPos);
+      yPos += replyLines.length * lineHeight + 5;
+    } else {
+      doc.setFont(undefined, "bold");
+      doc.text("Status:", 20, yPos);
+      doc.setFont(undefined, "normal");
+      doc.text("Awaiting Reply", 60, yPos);
+      yPos += lineHeight + 5;
+    }
+
+    // Add footer with divider
+    doc.setDrawColor(237, 191, 109); // Gold color
+    doc.setLineWidth(0.5);
+    doc.line(20, yPos, pageWidth - 20, yPos);
+    yPos += lineHeight;
+
+    // Add download timestamp
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100); // Gray color
+    doc.text(`Downloaded on: ${new Date().toLocaleString()}`, 20, yPos);
+
+    // Save the PDF
+    doc.save(`Ticket_${contactId}_${contact.name.replace(/\s+/g, "_")}.pdf`);
+
+    // Show success message
+    setAlertConfig({
+      show: true,
+      message: "Ticket details downloaded as PDF successfully.",
+      variant: "success",
+      onConfirm: null,
+    });
+  };
+
   if (loading) return <div className="text-center text-lg">Loading...</div>;
   if (error)
     return <div className="text-center text-red-500 text-lg">{error}</div>;
@@ -227,13 +338,21 @@ const TicketSinglePage = () => {
         </div>
 
         {/* Buttons */}
-        <div className="mt-8 flex flex-col items-center space-y-4">
+        <div className="mt-8 flex flex-col sm:flex-row sm:justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <Link
             to="/contact/your-tickets"
             className="bg-[#edbf6d] text-[#00032e] hover:bg-[#d9a856] px-6 py-3 rounded-2xl font-bold transition-all duration-300"
           >
             Back to My Tickets
           </Link>
+
+          {/* Download PDF button */}
+          <button
+            onClick={handleDownloadPDF}
+            className="bg-green-600 text-white hover:bg-green-700 px-6 py-3 rounded-2xl font-bold transition-all duration-300"
+          >
+            Download PDF
+          </button>
 
           {/* Only show delete button if the contact hasn't been replied to */}
           {!contact.replied && (
