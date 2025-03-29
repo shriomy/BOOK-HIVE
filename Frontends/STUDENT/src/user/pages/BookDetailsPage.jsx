@@ -119,8 +119,8 @@ const BookDetailsPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="animate-pulse flex flex-col items-center">
-          <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-          <div className="text-indigo-600 text-xl font-medium">
+          <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <div className="text-orange-500 text-xl font-medium">
             Loading book details...
           </div>
         </div>
@@ -218,7 +218,7 @@ const BookDetailsPage = () => {
                       <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2 leading-tight">
                         {book.title}
                       </h1>
-                      <p className="text-lg text-indigo-600 mb-3">
+                      <p className="text-lg text-yellow-600 mb-3">
                         By <span className="font-medium">{book.author}</span>
                       </p>
                     </div>
