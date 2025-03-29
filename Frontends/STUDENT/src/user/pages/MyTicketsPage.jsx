@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Use useNavigate instead of Link
+import { useNavigate } from "react-router-dom";
 
 const MyTicketsPage = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Use navigate for redirection
+  const [isVisible, setIsVisible] = useState(false);
+  const tableRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -20,6 +22,33 @@ const MyTicketsPage = () => {
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // When the table comes into view
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          // Once visible, no need to observe anymore
+          observer.disconnect();
+        }
+      },
+      {
+        root: null, // viewport
+        threshold: 0.1, // Trigger when at least 10% of the element is visible
+      }
+    );
+
+    if (tableRef.current) {
+      observer.observe(tableRef.current);
+    }
+
+    return () => {
+      if (tableRef.current) {
+        observer.disconnect();
+      }
+    };
+  }, [loading]); // Re-run when loading changes to ensure we have the table
 
   return (
     <div className="min-h-screen py-12">
@@ -38,7 +67,7 @@ const MyTicketsPage = () => {
 
         {loading && <div className="text-center text-lg">Loading...</div>}
         {error && (
-          <div className="text-center text-red-500 text-lg">{error}</div>
+          <div className="text-center text-lg text-red-500">{error}</div>
         )}
 
         {!loading && !error && contacts.length === 0 && (
@@ -46,7 +75,14 @@ const MyTicketsPage = () => {
         )}
 
         {!loading && !error && contacts.length > 0 && (
-          <div className="overflow-x-auto">
+          <div
+            ref={tableRef}
+            className={`overflow-x-auto transition-all duration-1000 transform ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+            }`}
+          >
             <table className="w-full border-collapse rounded-lg shadow-lg bg-[#1e1b18]">
               <thead>
                 <tr className="bg-[#edbf6d] text-[#00032e] text-lg">
@@ -57,24 +93,58 @@ const MyTicketsPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {contacts.map((contact) => (
+                {contacts.map((contact, index) => (
                   <tr
                     key={contact._id}
                     onClick={() => navigate(`/contacts/${contact._id}`)}
-                    className={`border-b border-gray-600 cursor-pointer ${
-                      contact.replied ? "bg-[#4CAF50]" : "bg-[#1e1b18]"
-                    } hover:bg-[#4a2f27] transition-all duration-200`}
+                    className={`border-b cursor-pointer transition-all duration-200 
+                      ${
+                        contact.replied
+                          ? "bg-green-600 hover:bg-green-700"
+                          : "bg-yellow-600 hover:bg-yellow-700"
+                      }`}
+                    style={{
+                      transitionDelay: `${index * 50}ms`,
+                      opacity: isVisible ? 1 : 0,
+                      transform: isVisible
+                        ? "translateY(0)"
+                        : "translateY(20px)",
+                    }}
                   >
-                    <td className="py-4 px-6">{contact.name}</td>
-                    <td className="py-4 px-6">{contact.itNumber}</td>
-                    <td className="py-4 px-6">
+                    <td
+                      className={`py-4 px-6 ${
+                        contact.replied ? "text-white" : ""
+                      }`}
+                    >
+                      {contact.name}
+                    </td>
+                    <td
+                      className={`py-4 px-6 ${
+                        contact.replied ? "text-white" : ""
+                      }`}
+                    >
+                      {contact.itNumber}
+                    </td>
+                    <td
+                      className={`py-4 px-6 ${
+                        contact.replied ? "text-white" : ""
+                      }`}
+                    >
                       {new Date(contact.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="py-4 px-6">
+                    <td
+                      className={`py-4 px-6 ${
+                        contact.replied ? "text-white" : ""
+                      }`}
+                    >
                       {contact.replied ? (
-                        <span className="text-white">Replied</span>
+                        <span className="inline-block px-2 py-1 bg-green-800 text-white rounded">
+                          Replied
+                        </span>
                       ) : (
-                        <span className="text-white">Pending</span>
+                        <span className="inline-block px-2 py-1 bg-yellow-800 text-white rounded">
+                          Pending
+                        </span>
                       )}
                     </td>
                   </tr>

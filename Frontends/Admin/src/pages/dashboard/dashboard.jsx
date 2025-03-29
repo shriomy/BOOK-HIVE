@@ -10,6 +10,7 @@ import BorrowBook from "../../components/borrowBook/borrowBook";
 import AllDonations from "../../components/all-donations/allDonations";
 import DashboardHome from "../../components/dashboardHome/dashboardHome";
 import BookReviews from "../../components/book-reviews/bookReviews";
+import ContactTable from "../../components/all-tickets/userTickets";
 const Dashboard = () => {
   const [isActive, setIsActive] = useState("home");
   const navigate = useNavigate();
@@ -83,10 +84,10 @@ const Dashboard = () => {
             Borrow Books
           </Button>
           <Button
-            onClick={() => handleClick("account", "#")}
-            className={`menu-button ${isActive === "account" ? "active" : ""}`}
+            onClick={() => handleClick("tickets", "#")}
+            className={`menu-button ${isActive === "tickets" ? "active" : ""}`}
           >
-            Account Requests
+            All Tickets
           </Button>
           <Button
             onClick={() => handleClick("donation", "#")}
@@ -132,8 +133,8 @@ const Dashboard = () => {
           {isActive === "home" && <DashboardHome />}
           {isActive === "user" ? <UserTable /> : ""}
           {isActive === "books" ? <AllBooks /> : ""}
-          {isActive === "borrow" ? <BorrowBook/> : ""}
-          {isActive === "account" ? "" : ""}
+          {isActive === "borrow" ? <BorrowBook /> : ""}
+          {isActive === "tickets" ? <ContactTable /> : ""}
           {isActive === "donation" ? <AllDonations /> : ""}
           {isActive === "reviews" ? <BookReviews /> : ""}
         </Box>
