@@ -12,6 +12,7 @@ const adminBookRoutes = require("./routes/adminBookRoutes");
 const donationRoutes = require("./routes/donationRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const borrowingRoutes = require("./routes/borrowingRoutes");
+const contactRoutes = require("./routes/contactRoutes");
 
 // Middleware
 app.use(express.json());
@@ -42,6 +43,8 @@ app.use("/api/donations", donationRoutes);
 app.use("/", reviewRoutes);
 
 app.use("/api/borrowings", borrowingRoutes);
+
+app.use("/", contactRoutes);
 
 // Start server
 app.listen(3000, () => {
