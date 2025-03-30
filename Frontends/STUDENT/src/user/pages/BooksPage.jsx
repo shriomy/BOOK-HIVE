@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+import MostAvailableBooks from "../components/Recomendations";
+
 const BooksPage = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -81,6 +83,9 @@ const BooksPage = () => {
 
   return (
     <div className="min-h-screen bg-white py-12">
+      <div>
+        <MostAvailableBooks />
+      </div>
       <style jsx>{`
         /* Entry animation */
         @keyframes fadeSlideUp {
@@ -164,11 +169,11 @@ const BooksPage = () => {
           <div className="flex space-x-1 md:space-x-3 px-2">
             {[
               "All",
-              "Best Sellers",
-              "Fantasy",
-              "History",
-              "Art",
-              "Love Stories",
+              "IT Related",
+              "Business",
+              "Architecture",
+              "LAW",
+              "Engineering",
             ].map((category) => (
               <button
                 key={category}
