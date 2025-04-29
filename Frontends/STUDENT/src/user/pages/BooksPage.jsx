@@ -86,7 +86,7 @@ const BooksPage = () => {
       <div>
         <MostAvailableBooks />
       </div>
-      <style jsx>{`
+      <style jsx={true}>{`
         /* Entry animation */
         @keyframes fadeSlideUp {
           from {
