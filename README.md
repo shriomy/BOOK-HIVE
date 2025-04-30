@@ -13,6 +13,13 @@ The system also features a sophisticated book recommendation component that sugg
 
 ---
 
+## Group Information
+
+- Group ID: Y3.S2.WE.IT.06.01
+- Project Group ID: Y3S2-WE-159
+
+---
+
 | Name | Student Registration No |
 |-------------------|------------------------|
 | Mithushi Pushparagavan | IT22180902 |
