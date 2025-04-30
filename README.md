@@ -8,6 +8,7 @@ BOOK-HIVE provides an intuitive and user-friendly interface designed for both li
 
 This system enhances operational efficiency by automating key library processes and maintaining a well-organized database of books and transactions. Whether it's borrowing a book or managing a library's entire collection, BOOK-HIVE brings a reliable and scalable solution to digital library management.
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ✨ Key Features
 
 📖 Book Management – Admins can add, update, and delete books.
@@ -22,7 +23,7 @@ This system enhances operational efficiency by automating key library processes 
 
 🔒 Authentication & Authorization – Secure login for both users and admins.
 
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 🔧 Tech Stack
 
 Frontend: React.js
