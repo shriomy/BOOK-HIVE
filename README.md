@@ -11,11 +11,18 @@ This system enhances operational efficiency by automating key library processes 
 ✨ Key Features
 
 📖 Book Management – Admins can add, update, and delete books.
+
 👥 User Management – Admins can manage registered users and their activities.
+
 📥 Borrow Requests – Users can send borrow requests; admins can verify and update them.
+
 🔄 Borrow & Return Tracking – Tracks book borrowing history and return status.
+
 💻 User-Friendly Interface – Clean and responsive design built with React.
+
 🔒 Authentication & Authorization – Secure login for both users and admins.
+
+
 🔧 Tech Stack
 
 Frontend: React.js
