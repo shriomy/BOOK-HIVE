@@ -8,6 +8,15 @@ BOOK-HIVE provides an intuitive and user-friendly interface designed for both li
 
 This system enhances operational efficiency by automating key library processes and maintaining a well-organized database of books and transactions. Whether it's borrowing a book or managing a library's entire collection, BOOK-HIVE brings a reliable and scalable solution to digital library management.
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+| Name | Student Registration No |
+|-------------------|------------------------|
+| Mithushi Pushparagavan | IT22180902 |
+| Leitan Thimothy | IT22206428 |
+| Usman Hussain | IT22351104 |
+| Mohanadas Sanoch | IT22159694 |
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ✨ Key Features
 
