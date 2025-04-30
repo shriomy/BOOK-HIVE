@@ -806,7 +806,7 @@ const BooksTable = () => {
             </div>
           )}
           <p className="text-red-500 text-center font-medium mt-4">
-            This action cannot be undone.
+          Please confirm if you'd like to delete this.
           </p>
         </DialogContent>
         <DialogActions
