@@ -7,7 +7,7 @@
 .table-container {
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   margin-bottom: 30px;
 }
@@ -24,7 +24,8 @@
   }
   
   th {
-    background-color: #efe5e3;
+    background-color: #0f0b3c;
+    // background-color: #efe5e3;
     color: #3e2723;
     font-weight: 600;
     position: sticky;
@@ -47,7 +48,7 @@
     
     .book-title {
       font-weight: 500;
-      color: #000000;
+      color: #756a6a;
     }
   }
 }
