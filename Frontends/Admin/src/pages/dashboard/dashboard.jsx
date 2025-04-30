@@ -39,6 +39,7 @@ const Dashboard = () => {
   };
 
   return (
+    //
     <div className="abc">
       <Box className="dashboard-container">
         <Box className="menu-container">
@@ -66,6 +67,12 @@ const Dashboard = () => {
             Home
           </Button>
           
+          <Button
+            onClick={() => handleClick("user", "#")}
+            className={`menu-button ${isActive === "user" ? "active" : ""}`}
+          >
+            All Users
+          </Button>
           <Button
             onClick={() => handleClick("books", "#")}
             className={`menu-button ${isActive === "books" ? "active" : ""}`}
