@@ -123,7 +123,7 @@ const Dashboard = () => {
                 Welcome, {adminName}
               </Typography>
               <Typography className="sub-text">
-                Monitor all of your projects and tasks here
+                Monitor all of your projects and tasks here.
               </Typography>
             </Box>
             <Box>
