@@ -26,6 +26,9 @@ This system enhances operational efficiency by automating key library processes 
 🔧 Tech Stack
 
 Frontend: React.js
+
 Backend: Node.js, Express.js
+
 Database: MongoDB
+
 Version Control: Git & GitHub
