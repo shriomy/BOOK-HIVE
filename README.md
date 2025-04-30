@@ -9,6 +9,8 @@ BOOK-HIVE provides an intuitive and user-friendly interface designed for both **
 
 This system enhances operational efficiency by automating key library processes and maintaining a well-organized database of books and transactions. Whether it's borrowing a book or managing a library's entire collection, BOOK-HIVE brings a reliable and scalable solution to digital library management.
 
+The system also features a sophisticated book recommendation component that suggests relevant titles to users based on their reading history, preferences, and browsing patterns.
+
 ---
 
 | Name | Student Registration No |
