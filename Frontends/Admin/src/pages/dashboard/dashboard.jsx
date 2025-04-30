@@ -55,7 +55,7 @@ const Dashboard = () => {
             <span className="italic">hive</span>
           </Link>
 
-          <div className="text-[#3e2723] font-bold text-xl flex mb-10 ml-9">
+          <div className="text-[#3e2723] font-bold text-xl flex mb-11 ml-9">
             Dashboard
           </div>
 
