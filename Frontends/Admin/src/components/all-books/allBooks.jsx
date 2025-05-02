@@ -200,17 +200,17 @@ const BooksTable = () => {
 
   const handleAddBook = async () => {
     try {
-      
+      // Check if a book with the same title already exists
       const existingBook = books.find(
         (book) => book.title.toLowerCase() === newBook.title.toLowerCase()
       );
 
       if (existingBook) {
-       
+        // If the book exists, increase its count
         const updatedBookCount =
           parseInt(existingBook.bookCount) + parseInt(newBook.bookCount || 1);
 
-        
+        // Update the existing book
         await axios.put(
           `http://localhost:3000/books/${existingBook._id}`,
           { bookCount: updatedBookCount },
@@ -290,7 +290,7 @@ const BooksTable = () => {
         formData.append("bookImage", editBook.bookImage);
       }
 
-     
+      // Send as multipart/form-data
       await axios.put(`http://localhost:3000/books/${editBook._id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -806,7 +806,7 @@ const BooksTable = () => {
             </div>
           )}
           <p className="text-red-500 text-center font-medium mt-4">
-          Please confirm if you'd like to delete this.
+            This action cannot be undone.
           </p>
         </DialogContent>
         <DialogActions
