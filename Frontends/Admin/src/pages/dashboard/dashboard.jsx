@@ -39,6 +39,7 @@ const Dashboard = () => {
   };
 
   return (
+    //
     <div className="abc">
       <Box className="dashboard-container">
         <Box className="menu-container">
@@ -55,7 +56,7 @@ const Dashboard = () => {
             <span className="italic">hive</span>
           </Link>
 
-          <div className="text-[#3e2723] font-bold text-xl flex mb-10 ml-9">
+          <div className="text-[#3e2723] font-bold text-xl flex mb-11 ml-9">
             Dashboard
           </div>
 
@@ -65,6 +66,7 @@ const Dashboard = () => {
           >
             Home
           </Button>
+          
           <Button
             onClick={() => handleClick("user", "#")}
             className={`menu-button ${isActive === "user" ? "active" : ""}`}
@@ -123,7 +125,7 @@ const Dashboard = () => {
                 Welcome, {adminName}
               </Typography>
               <Typography className="sub-text">
-                Monitor all of your projects and tasks here
+                Monitor all of your projects and tasks here.
               </Typography>
             </Box>
             <Box>

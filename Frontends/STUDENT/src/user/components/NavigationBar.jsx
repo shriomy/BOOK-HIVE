@@ -87,45 +87,6 @@ const NavigationBar = ({
           )}
         </Link>
         <Link
-          to="/pricing"
-          className={`relative px-4 py-2 rounded-md transition-all duration-500 ease-in-out ${
-            isActive("/pricing")
-              ? "bg-black text-white scale-105"
-              : "hover:text-white"
-          }`}
-        >
-          Pricing
-          {isActive("/pricing") && (
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-black transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></div>
-          )}
-        </Link>
-        <Link
-          to="/news"
-          className={`relative px-4 py-2 rounded-md transition-all duration-500 ease-in-out ${
-            isActive("/news")
-              ? "bg-black text-white scale-105"
-              : "hover:text-white"
-          }`}
-        >
-          News
-          {isActive("/news") && (
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-black transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></div>
-          )}
-        </Link>
-        <Link
-          to="/shop"
-          className={`relative px-4 py-2 rounded-md transition-all duration-500 ease-in-out ${
-            isActive("/shop")
-              ? "bg-black text-white scale-105"
-              : "hover:text-white"
-          }`}
-        >
-          Shop
-          {isActive("/shop") && (
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-black transform scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></div>
-          )}
-        </Link>
-        <Link
           to="/contact"
           className={`relative px-4 py-2 rounded-md transition-all duration-500 ease-in-out ${
             isActive("/contact")
