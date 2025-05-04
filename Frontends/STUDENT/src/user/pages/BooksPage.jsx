@@ -6,6 +6,7 @@ import MostAvailableBooks from "../components/Recomendations";
 
 const BooksPage = () => {
   const [books, setBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
@@ -17,6 +18,7 @@ const BooksPage = () => {
       try {
         const response = await axios.get("http://localhost:4000/api/books");
         setBooks(response.data);
+        setFilteredBooks(response.data); // Initialize filtered books with all books
         setLoading(false);
       } catch (error) {
         setError("Error fetching books");
@@ -26,11 +28,22 @@ const BooksPage = () => {
     fetchBooks();
   }, []);
 
+  // Filter books when category changes
   useEffect(() => {
-    // Initialize the Intersection Observer after books are loaded
-    if (books.length > 0) {
-      bookRefs.current = bookRefs.current.slice(0, books.length);
+    if (activeCategory === "All") {
+      setFilteredBooks(books);
+    } else {
+      const filtered = books.filter(book => book.category === activeCategory);
+      setFilteredBooks(filtered);
+    }
+  }, [activeCategory, books]);
 
+  useEffect(() => {
+    // Reset book refs when filtered books change
+    bookRefs.current = bookRefs.current.slice(0, filteredBooks.length);
+
+    // Initialize the Intersection Observer after books are loaded
+    if (filteredBooks.length > 0) {
       const observerOptions = {
         root: null, // Use the viewport as the root
         rootMargin: "0px",
@@ -63,7 +76,7 @@ const BooksPage = () => {
 
       return () => observer.disconnect();
     }
-  }, [books]);
+  }, [filteredBooks]);
 
   if (loading) {
     return (
@@ -213,52 +226,58 @@ const BooksPage = () => {
 
         {/* Books Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
-          {books.map((book, index) => (
-            <div
-              key={book._id}
-              ref={(el) => (bookRefs.current[index] = el)}
-              className="group relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:-translate-y-2"
-            >
-              {/* Book Image */}
-              <div className="h-64 overflow-hidden relative">
-                <img
-                  src={`http://localhost:4000/api/books/${book._id}/image`}
-                  alt={book.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "/placeholder-book.png"; // Fallback image
-                  }}
-                />
+          {filteredBooks.length > 0 ? (
+            filteredBooks.map((book, index) => (
+              <div
+                key={book._id}
+                ref={(el) => (bookRefs.current[index] = el)}
+                className="group relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:-translate-y-2"
+              >
+                {/* Book Image */}
+                <div className="h-64 overflow-hidden relative">
+                  <img
+                    src={`http://localhost:4000/api/books/${book._id}/image`}
+                    alt={book.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/placeholder-book.png"; // Fallback image
+                    }}
+                  />
 
-                {/* Gradient filling overlay that scales from bottom to top */}
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-yellow-500 origin-bottom transform scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-in-out opacity-0 group-hover:opacity-90"></div>
+                  {/* Gradient filling overlay that scales from bottom to top */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-yellow-500 origin-bottom transform scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-in-out opacity-0 group-hover:opacity-90"></div>
 
-                {/* Content that appears on hover */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 transition-opacity duration-500 delay-100 group-hover:opacity-100">
-                  <h2 className="text-xl font-serif mb-2 text-white text-center px-4">
+                  {/* Content that appears on hover */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 transition-opacity duration-500 delay-100 group-hover:opacity-100">
+                    <h2 className="text-xl font-serif mb-2 text-white text-center px-4">
+                      {book.title}
+                    </h2>
+                    <Link
+                      to={`/books/${book._id}`}
+                      className="text-white font-semibold hover:text-[#2c1f19] transition duration-200 mt-2 border border-white px-4 py-2 hover:border-[#2c1f19]"
+                    >
+                      View Details
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Book Information (visible when not hovering) */}
+                <div className="p-4 bg-white">
+                  <p className="text-[#edab3b] uppercase text-xs tracking-wider mb-1">
+                    {book.author}
+                  </p>
+                  <h2 className="text-xl font-serif mb-2 text-[#2c1f19]">
                     {book.title}
                   </h2>
-                  <Link
-                    to={`/books/${book._id}`}
-                    className="text-white font-semibold hover:text-[#2c1f19] transition duration-200 mt-2 border border-white px-4 py-2 hover:border-[#2c1f19]"
-                  >
-                    View Details
-                  </Link>
                 </div>
               </div>
-
-              {/* Book Information (visible when not hovering) */}
-              <div className="p-4 bg-white">
-                <p className="text-[#edab3b] uppercase text-xs tracking-wider mb-1">
-                  {book.author}
-                </p>
-                <h2 className="text-xl font-serif mb-2 text-[#2c1f19]">
-                  {book.title}
-                </h2>
-              </div>
+            ))
+          ) : (
+            <div className="col-span-full text-center py-8">
+              <p className="text-lg text-gray-600">No books found in this category.</p>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

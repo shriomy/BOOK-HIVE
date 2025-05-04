@@ -42,6 +42,14 @@ const StyledTextField = styled(TextField)({
   },
 });
 
+const StyledFormControl = styled(FormControl)({
+  marginBottom: "16px",
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "8px",
+    backgroundColor: "#fff",
+  },
+});
+
 const StyledButton = styled(Button)({
   borderRadius: "8px",
   padding: "8px 16px",
@@ -106,6 +114,15 @@ const BooksTable = () => {
     bookCount: "",
     bookImage: "",
   });
+
+  // Available category options
+  const categoryOptions = [
+    "IT Related",
+    "Law",
+    "Business",
+    "Architecture",
+    "Engineering",
+  ];
 
   useEffect(() => {
     fetchBooks();
@@ -363,6 +380,11 @@ const BooksTable = () => {
       Thriller: "#ce93d8",
       Poetry: "#c5e1a5",
       Philosophy: "#9fa8da",
+      IT: "#80cbc4",
+      Law: "#ffcc80",
+      Business: "#81d4fa",
+      Architecture: "#bcaaa4",
+      Engineering: "#b0bec5",
     };
 
     return colorMap[category] || "#e0e0e0";
@@ -616,14 +638,22 @@ const BooksTable = () => {
             fullWidth
             placeholder="Enter author name"
           />
-          <StyledTextField
-            label="Category"
-            name="category"
-            value={newBook.category}
-            onChange={handleInputChange}
-            fullWidth
-            placeholder="e.g. Fiction, Non-Fiction, Biography"
-          />
+          <StyledFormControl fullWidth>
+            <InputLabel id="category-label">Category</InputLabel>
+            <Select
+              labelId="category-label"
+              name="category"
+              value={newBook.category}
+              onChange={handleInputChange}
+              label="Category"
+            >
+              {categoryOptions.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </Select>
+          </StyledFormControl>
           <StyledTextField
             label="Genre"
             name="genre"
@@ -710,15 +740,23 @@ const BooksTable = () => {
               }
               fullWidth
             />
-            <StyledTextField
-              label="Category"
-              name="category"
-              value={editBook.category}
-              onChange={(e) =>
-                setEditBook({ ...editBook, category: e.target.value })
-              }
-              fullWidth
-            />
+            <StyledFormControl fullWidth>
+              <InputLabel id="edit-category-label">Category</InputLabel>
+              <Select
+                labelId="edit-category-label"
+                value={editBook.category}
+                onChange={(e) =>
+                  setEditBook({ ...editBook, category: e.target.value })
+                }
+                label="Category"
+              >
+                {categoryOptions.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
+            </StyledFormControl>
             <StyledTextField
               label="Genre"
               name="genre"
