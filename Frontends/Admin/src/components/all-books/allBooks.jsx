@@ -117,11 +117,12 @@ const BooksTable = () => {
 
   // Available category options
   const categoryOptions = [
-    "IT Related",
+    
+    "IT",
     "Law",
     "Business",
     "Architecture",
-    "Engineering",
+    "Engineering"
   ];
 
   useEffect(() => {
@@ -384,7 +385,7 @@ const BooksTable = () => {
       Law: "#ffcc80",
       Business: "#81d4fa",
       Architecture: "#bcaaa4",
-      Engineering: "#b0bec5",
+      Engineering: "#b0bec5"
     };
 
     return colorMap[category] || "#e0e0e0";
