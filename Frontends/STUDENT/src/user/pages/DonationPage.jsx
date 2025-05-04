@@ -138,16 +138,12 @@ export default function DonationPage() {
                 className="w-full p-3 rounded-xl bg-[#4a3936] text-white focus:ring-2 focus:ring-[#edbf6d] focus:outline-none"
               >
                 <option value="">Select Genre</option>
-                <option value="Fiction">Fiction</option>
-                <option value="Non-Fiction">Non-Fiction</option>
-                <option value="Mystery">Mystery</option>
-                <option value="Fantasy">Fantasy</option>
-                <option value="Science Fiction">Science Fiction</option>
-                <option value="Romance">Romance</option>
-                <option value="Thriller">Thriller</option>
-                <option value="Biography">Biography</option>
-                <option value="Self-Help">Self-Help</option>
-                <option value="History">History</option>
+                <option value="Fiction">IT Related</option>
+                <option value="Non-Fiction">LAW</option>
+                <option value="Mystery">Business</option>
+                <option value="Fantasy">Architecture</option>
+                <option value="Science Fiction">Engineering</option>
+                
               </select>
 
               <select

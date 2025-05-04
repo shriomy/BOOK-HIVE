@@ -118,7 +118,7 @@ const BooksTable = () => {
   // Available category options
   const categoryOptions = [
     
-    "IT",
+    "IT Related",
     "Law",
     "Business",
     "Architecture",
