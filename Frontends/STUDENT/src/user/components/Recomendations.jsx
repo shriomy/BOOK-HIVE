@@ -1,14 +1,110 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../../UserContext"; // Adjust the import path as needed
 import "../../index.css";
 
 export default function MostAvailableBooks() {
+  const { user } = useContext(UserContext);
   const [mostBorrowedBooks, setMostBorrowedBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("all"); // Default value will be updated based on user
+  const [readyToFilter, setReadyToFilter] = useState(false);
 
   // Define the API base URL
   const API_BASE_URL = "http://localhost:4000";
+
+  // Define filter categories and their keywords
+  const categories = {
+    all: { name: "All Books", keywords: [] },
+    it: { 
+      name: "IT & Computing",
+      keywords: [
+        "programming", "computer", "software", "development", 
+        "web", "database", "network", "security", "cloud", 
+        "data", "IT", "information technology", "code", "coding",
+        "algorithm", "artificial intelligence", "AI", "machine learning",
+        "cybersecurity", "hardware", "system", "admin", "DevOps",
+        "frontend", "backend", "fullstack", "javascript", "python",
+        "java", "C++", "C#", "ruby", "php", "sql", "nosql",
+        "react", "angular", "vue", "node", "blockchain", "crypto"
+      ]
+    },
+    law: {
+      name: "Law & Legal Studies",
+      keywords: [
+        "law", "legal", "legislation", "jurisprudence", "court", "judiciary",
+        "criminal", "civil", "constitutional", "rights", "justice", "attorney",
+        "lawyer", "advocate", "plaintiff", "defendant", "tort", "contract",
+        "property law", "family law", "corporate law", "international law",
+        "intellectual property", "patent", "copyright", "trademark", "litigation",
+        "judicial", "statute", "regulation", "compliance", "legal case", "precedent"
+      ]
+    },
+    business: {
+      name: "Business & Management",
+      keywords: [
+        "business", "management", "marketing", "finance", "accounting", 
+        "economics", "entrepreneur", "strategy", "leadership", "organization",
+        "corporate", "startup", "innovation", "investment", "banking",
+        "commerce", "trade", "retail", "market", "sales", "advertising",
+        "branding", "HR", "human resources", "operations", "logistics",
+        "supply chain", "MBA", "administration", "consulting", "negotiation"
+      ]
+    },
+    engineering: {
+      name: "Engineering",
+      keywords: [
+        "engineering", "mechanical", "electrical", "civil", "chemical",
+        "industrial", "aerospace", "automotive", "robotics", "manufacturing",
+        "materials", "structural", "biomedical", "environmental", "petroleum",
+        "construction", "architectural engineering", "systems engineering",
+        "electronics", "telecommunications", "hydraulics", "thermodynamics",
+        "mechanics", "dynamics", "statics", "fluid mechanics", "circuit",
+        "control system", "CAD", "design", "prototype", "testing"
+      ]
+    },
+    architecture: {
+      name: "Architecture & Design",
+      keywords: [
+        "architecture", "architect", "design", "urban planning", "landscape",
+        "interior design", "building", "structure", "construction", "sustainable",
+        "green building", "LEED", "blueprint", "floor plan", "elevation",
+        "rendering", "3D modeling", "BIM", "building code", "residential",
+        "commercial", "industrial architecture", "historic preservation",
+        "restoration", "facade", "spatial", "architectural theory", "brutalism",
+        "modernism", "postmodernism", "classical", "contemporary", "vernacular"
+      ]
+    }
+  };
+
+  // Helper function to determine the user's category based on ID number prefix
+  const getUserCategory = (userData) => {
+    if (!userData || !userData.id) return "all";
+    
+    // Get the ID number as a string
+    const idString = userData.id.toString();
+    
+    // Check the prefix of the ID to determine the category
+    if (idString.startsWith("IT")) return "it";
+    if (idString.startsWith("LAW")) return "law";
+    if (idString.startsWith("BUS")) return "business";
+    if (idString.startsWith("ENG")) return "engineering";
+    if (idString.startsWith("ARCH")) return "architecture";
+    
+    // Default to all if no match found
+    return "all";
+  };
+
+  // Set initial category based on user when user data becomes available
+  useEffect(() => {
+    if (user) {
+      const userCategory = getUserCategory(user);
+      setSelectedCategory(userCategory);
+    }
+    setReadyToFilter(true);
+  }, [user]);
 
   useEffect(() => {
     // Set up the SSE connection
@@ -23,9 +119,13 @@ export default function MostAvailableBooks() {
         // Make sure data is an array before setting state
         if (Array.isArray(data)) {
           setMostBorrowedBooks(data);
+          
+          // Initial filtering will happen in another useEffect
+          // when both data and user category are ready
         } else {
           console.error("Received non-array data:", data);
           setMostBorrowedBooks([]); // Set to empty array if not an array
+          setFilteredBooks([]);
         }
         setLoading(false);
       } catch (err) {
@@ -48,6 +148,39 @@ export default function MostAvailableBooks() {
       eventSource.close();
     };
   }, []);
+
+  // Function to filter books by category
+  const filterBooksByCategory = (books, category) => {
+    if (category === "all") {
+      return books; // Return all books if "all" is selected
+    }
+    
+    const categoryKeywords = categories[category]?.keywords || [];
+    
+    return books.filter(book => {
+      // Convert all relevant fields to lowercase for case-insensitive matching
+      const title = book.title?.toLowerCase() || "";
+      const genre = book.genre?.toLowerCase() || "";
+      const category = book.category?.toLowerCase() || "";
+      const description = book.description?.toLowerCase() || "";
+      
+      // Check if any of the category keywords are in the book's details
+      return categoryKeywords.some(keyword => 
+        title.includes(keyword.toLowerCase()) || 
+        genre.includes(keyword.toLowerCase()) || 
+        category.includes(keyword.toLowerCase()) ||
+        description.includes(keyword.toLowerCase())
+      );
+    });
+  };
+
+  // Apply filter when category changes or when books data is loaded
+  useEffect(() => {
+    if (readyToFilter && mostBorrowedBooks.length > 0) {
+      const filtered = filterBooksByCategory(mostBorrowedBooks, selectedCategory);
+      setFilteredBooks(filtered);
+    }
+  }, [selectedCategory, mostBorrowedBooks, readyToFilter]);
 
   if (loading) {
     return (
@@ -78,16 +211,32 @@ export default function MostAvailableBooks() {
     );
   }
 
-  // Make sure mostBorrowedBooks is an array before mapping
-  const booksToDisplay = Array.isArray(mostBorrowedBooks)
-    ? mostBorrowedBooks
-    : [];
+  // Make sure filteredBooks is an array before mapping
+  const booksToDisplay = Array.isArray(filteredBooks) ? filteredBooks : [];
 
   return (
     <div className="min-h-screen p-6">
       <h2 className="text-2xl font-bold mb-6 text-center">
-        Most Popular Books
+        {selectedCategory === "all" 
+          ? "Most Popular Books" 
+          : `${categories[selectedCategory].name} Popular Books`}
       </h2>
+
+      <div className="flex justify-center mb-6 flex-wrap gap-2">
+        {Object.keys(categories).map((categoryKey) => (
+          <button
+            key={categoryKey}
+            onClick={() => setSelectedCategory(categoryKey)}
+            className={`font-semibold py-2 px-4 rounded transition-colors ${
+              selectedCategory === categoryKey
+                ? "bg-blue-600 text-white" 
+                : "bg-gray-200 hover:bg-gray-300 text-gray-800"
+            }`}
+          >
+            {categories[categoryKey].name}
+          </button>
+        ))}
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         {booksToDisplay.map((book) => (
@@ -145,7 +294,11 @@ export default function MostAvailableBooks() {
 
       {booksToDisplay.length === 0 && (
         <div className="text-center text-gray-500 mt-10">
-          <p>No borrowing data available yet.</p>
+          <p>
+            {selectedCategory !== "all"
+              ? `No ${categories[selectedCategory].name} books found.`
+              : "No borrowing data available yet."}
+          </p>
         </div>
       )}
     </div>
