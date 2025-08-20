@@ -24,6 +24,6 @@
     "nodemon": "^3.1.9"
   },
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "node init && nodemon index.js"
   }
 }
