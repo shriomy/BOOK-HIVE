@@ -106,7 +106,7 @@ const Dashboard = () => {
           <Box className="logout">
             <img src={Profile} alt="" className="logout-profile" />
             <Box>
-              <Typography className="logout-name">{adminName}</Typography>
+              <Typography className="logout-name">admin Nimasha</Typography>
               <Typography className="logout-email">{adminEmail}</Typography>
             </Box>
             <img
@@ -122,7 +122,7 @@ const Dashboard = () => {
           <Box className="all-user-head">
             <Box>
               <Typography className="welcome-name">
-                Welcome, {adminName}
+                Welcome, Admin Nimasha
               </Typography>
               <Typography className="sub-text">
                 Monitor all of your projects and tasks here.
